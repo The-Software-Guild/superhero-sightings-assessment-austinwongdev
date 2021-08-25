@@ -111,17 +111,6 @@ public class SuperpersonDaoDBTest {
         superpower1 = new Superpower();
         superpower1.setSuperpowerName("Flying");
         superpower1 = superpowerDao.addSuperpower(superpower1);
-        
-        Organization organization1 = new Organization();
-        organization1.setAddress(address1);
-        organization1.setEmail("press@birds.com");
-        organization1.setOrgDescription("Superheroes of flight");
-        organization1.setOrgName("Bird Squad");
-        organization1.setPhone("555-555-5555");
-        organization1.setSupertype(supertypeDao.getSupertypeById(1));
-        organizations = new ArrayList<>();
-        organizations.add(organization1);
-        organizationDao.addOrganization(organization1);
     }
     
     @AfterEach
@@ -172,7 +161,7 @@ public class SuperpersonDaoDBTest {
         superperson2.setSuperpower(superpower1);
         superperson2.setSupertype(supertypeDao.getSupertypeById(1));
         superperson2.setOrganizations(superperson1.getOrganizations());
-        superpersonDao.addSuperperson(superperson2);
+        superperson2 = superpersonDao.addSuperperson(superperson2);
         
         List<Superperson> superpeople = superpersonDao.getAllSuperpeople();
         assertEquals(2, superpeople.size());
@@ -296,7 +285,7 @@ public class SuperpersonDaoDBTest {
         superperson2.setSuperpower(superpower1);
         superperson2.setSupertype(supertypeDao.getSupertypeById(1));
         superperson2.setOrganizations(superperson1.getOrganizations());
-        superpersonDao.addSuperperson(superperson2);
+        superperson2 = superpersonDao.addSuperperson(superperson2);
         
         // Create superperson not expected at location
         Superperson superperson3 = new Superperson();
@@ -305,7 +294,7 @@ public class SuperpersonDaoDBTest {
         superperson3.setSuperpower(superpower1);
         superperson3.setSupertype(supertypeDao.getSupertypeById(1));
         superperson3.setOrganizations(superperson1.getOrganizations());
-        superpersonDao.addSuperperson(superperson3);
+        superperson3 = superpersonDao.addSuperperson(superperson3);
         
         // Create Locations        
         Location location1 = new Location();
@@ -399,7 +388,7 @@ public class SuperpersonDaoDBTest {
         superperson2.setSuperpower(superpower1);
         superperson2.setSupertype(supertypeDao.getSupertypeById(1));
         superperson2.setOrganizations(expectedOrganizations);
-        superpersonDao.addSuperperson(superperson2);
+        superperson2 = superpersonDao.addSuperperson(superperson2);
         
         // Create superperson not expected at organization
         Superperson superperson3 = new Superperson();
@@ -408,7 +397,7 @@ public class SuperpersonDaoDBTest {
         superperson3.setSuperpower(superpower1);
         superperson3.setSupertype(supertypeDao.getSupertypeById(1));
         superperson3.setOrganizations(unexpectedOrganizations);
-        superpersonDao.addSuperperson(superperson3);
+        superperson3 = superpersonDao.addSuperperson(superperson3);
         
         // Get superheroes by organizations
         List<Superperson> superpeopleFromDao = superpersonDao.getSuperpeopleForOrganization(organization1);

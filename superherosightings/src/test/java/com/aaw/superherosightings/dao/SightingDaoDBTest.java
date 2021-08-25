@@ -125,9 +125,9 @@ public class SightingDaoDBTest {
         organization1.setOrgName("Bird Squad");
         organization1.setPhone("555-555-5555");
         organization1.setSupertype(supertypeDao.getSupertypeById(1));
+        organization1 = organizationDao.addOrganization(organization1);
         organizations = new ArrayList<>();
         organizations.add(organization1);
-        organizationDao.addOrganization(organization1);
         
         superperson1 = new Superperson();
         superperson1.setSuperpersonDescription("Can fly to the stratosphere");
@@ -135,7 +135,7 @@ public class SightingDaoDBTest {
         superperson1.setSuperpower(superpower1);
         superperson1.setSupertype(supertypeDao.getSupertypeById(1));
         superperson1.setOrganizations(organizations);
-        superpersonDao.addSuperperson(superperson1);
+        superperson1 = superpersonDao.addSuperperson(superperson1);
         
         location1 = new Location();
         location1.setAddress(address1);
@@ -226,7 +226,7 @@ public class SightingDaoDBTest {
         superperson2.setSuperpower(superpower1);
         superperson2.setSupertype(supertypeDao.getSupertypeById(1));
         superperson2.setOrganizations(superperson1.getOrganizations());
-        superpersonDao.addSuperperson(superperson2);
+        superperson2 = superpersonDao.addSuperperson(superperson2);
         
         // Update sighting
         sighting1.setSightingDatetime(LocalDateTime.of(2021, Month.APRIL, 8, 8, 8));

@@ -121,9 +121,9 @@ public class LocationDaoDBTest {
         organization1.setOrgName("Bird Squad");
         organization1.setPhone("555-555-5555");
         organization1.setSupertype(supertypeDao.getSupertypeById(1));
+        organization1 = organizationDao.addOrganization(organization1);
         organizations = new ArrayList<>();
         organizations.add(organization1);
-        organizationDao.addOrganization(organization1);
         
         superperson1 = new Superperson();
         superperson1.setSuperpersonDescription("Can fly to the stratosphere");
@@ -131,7 +131,7 @@ public class LocationDaoDBTest {
         superperson1.setSuperpower(superpower1);
         superperson1.setSupertype(supertypeDao.getSupertypeById(1));
         superperson1.setOrganizations(organizations);
-        superpersonDao.addSuperperson(superperson1);
+        superperson1 = superpersonDao.addSuperperson(superperson1);
         
     }
     

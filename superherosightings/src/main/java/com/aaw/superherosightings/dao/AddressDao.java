@@ -7,10 +7,17 @@
 
 package com.aaw.superherosightings.dao;
 
+import com.aaw.superherosightings.model.Address;
+
 /**
  *
  * @author Austin Wong
  */
 public interface AddressDao {
-
+   
+    Address getAddressById(int id);
+    Address addAddress(Address address);
+    void updateAddress(Address address);
+    void deleteAddressById(int id);
+    
 }

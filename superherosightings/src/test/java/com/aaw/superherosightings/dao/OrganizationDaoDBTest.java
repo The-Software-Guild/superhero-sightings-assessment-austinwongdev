@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -215,6 +216,21 @@ public class OrganizationDaoDBTest {
         organization1.setSupertype(supertypeDao.getSupertypeById(1));
         organization1 = organizationDao.addOrganization(organization1);
         
+        Organization organization2 = new Organization();
+        Address address2 = new Address();
+        address2.setAddress("456 Real St");
+        address2.setCity("Tucson");
+        address2.setState("AZ");
+        address2.setZip("80210");
+        organization2.setAddress(address2);
+        organization2.setEmail("press@villains.com");
+        organization2.setOrgDescription("Supervillains of flight");
+        organization2.setOrgName("Evil Bird Squad");
+        organization2.setPhone("808-808-8080");
+        organization2.setSupertype(supertypeDao.getSupertypeById(2));
+        organization2 = organizationDao.addOrganization(organization2);
+        final int organization2Id = organization2.getOrgId();
+        
         Superperson superperson1 = new Superperson();
         superperson1.setSuperpersonDescription("Can fly to the stratosphere");
         superperson1.setSuperpersonName("Hawkman");
@@ -233,9 +249,14 @@ public class OrganizationDaoDBTest {
         
         superperson1 = superpersonDao.getSuperpersonById(superperson1.getSuperpersonId());
         assertFalse(superperson1.getOrganizations().contains(organization1));
+        assertTrue(superperson1.getOrganizations().contains(organization2));
         
         addressFromDao = addressDao.getAddressById(addressFromDao.getAddressId());
         assertNull(addressFromDao);
+        
+        assertThrows(Exception.class,
+                () -> organizationDao.deleteOrganizationById(organization2Id),
+                "Should throw exception because every superperson needs at least 1 organization");
         
     }
 

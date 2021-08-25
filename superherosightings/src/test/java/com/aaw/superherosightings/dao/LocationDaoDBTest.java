@@ -123,6 +123,7 @@ public class LocationDaoDBTest {
         organization1.setSupertype(supertypeDao.getSupertypeById(1));
         organizations = new ArrayList<>();
         organizations.add(organization1);
+        organizationDao.addOrganization(organization1);
         
         superperson1 = new Superperson();
         superperson1.setSuperpersonDescription("Can fly to the stratosphere");

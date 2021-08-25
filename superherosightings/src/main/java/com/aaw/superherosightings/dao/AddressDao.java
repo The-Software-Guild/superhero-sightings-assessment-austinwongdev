@@ -8,6 +8,7 @@
 package com.aaw.superherosightings.dao;
 
 import com.aaw.superherosightings.model.Address;
+import java.util.List;
 
 /**
  *
@@ -16,6 +17,7 @@ import com.aaw.superherosightings.model.Address;
 public interface AddressDao {
    
     Address getAddressById(int id);
+    List<Address> getAllAddresses();
     Address addAddress(Address address);
     void updateAddress(Address address);
     void deleteAddressById(int id);

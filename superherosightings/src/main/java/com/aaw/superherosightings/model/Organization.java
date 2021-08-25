@@ -7,6 +7,7 @@
 
 package com.aaw.superherosightings.model;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -22,6 +23,7 @@ public class Organization {
     private String phone;
     private Address address;
     private Supertype supertype;
+    private List<Superperson> members;
 
     public int getOrgId() {
         return orgId;
@@ -79,16 +81,25 @@ public class Organization {
         this.supertype = supertype;
     }
 
+    public List<Superperson> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<Superperson> members) {
+        this.members = members;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 47 * hash + this.orgId;
-        hash = 47 * hash + Objects.hashCode(this.orgName);
-        hash = 47 * hash + Objects.hashCode(this.orgDescription);
-        hash = 47 * hash + Objects.hashCode(this.email);
-        hash = 47 * hash + Objects.hashCode(this.phone);
-        hash = 47 * hash + Objects.hashCode(this.address);
-        hash = 47 * hash + Objects.hashCode(this.supertype);
+        int hash = 5;
+        hash = 67 * hash + this.orgId;
+        hash = 67 * hash + Objects.hashCode(this.orgName);
+        hash = 67 * hash + Objects.hashCode(this.orgDescription);
+        hash = 67 * hash + Objects.hashCode(this.email);
+        hash = 67 * hash + Objects.hashCode(this.phone);
+        hash = 67 * hash + Objects.hashCode(this.address);
+        hash = 67 * hash + Objects.hashCode(this.supertype);
+        hash = 67 * hash + Objects.hashCode(this.members);
         return hash;
     }
 
@@ -125,8 +136,11 @@ public class Organization {
         if (!Objects.equals(this.supertype, other.supertype)) {
             return false;
         }
+        if (!Objects.equals(this.members, other.members)) {
+            return false;
+        }
         return true;
     }
 
-    
+        
 }

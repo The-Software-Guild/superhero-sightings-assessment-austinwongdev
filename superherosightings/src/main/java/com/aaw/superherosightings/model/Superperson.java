@@ -7,6 +7,7 @@
 
 package com.aaw.superherosightings.model;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -20,6 +21,7 @@ public class Superperson {
     private String superpersonDescription;
     private Supertype supertype;
     private Superpower superpower;
+    private List<Organization> organizations;
 
     public int getSuperpersonId() {
         return superpersonId;
@@ -61,14 +63,23 @@ public class Superperson {
         this.superpower = superpower;
     }
 
+    public List<Organization> getOrganizations() {
+        return organizations;
+    }
+
+    public void setOrganizations(List<Organization> organizations) {
+        this.organizations = organizations;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 59 * hash + this.superpersonId;
-        hash = 59 * hash + Objects.hashCode(this.superpersonName);
-        hash = 59 * hash + Objects.hashCode(this.superpersonDescription);
-        hash = 59 * hash + Objects.hashCode(this.supertype);
-        hash = 59 * hash + Objects.hashCode(this.superpower);
+        hash = 71 * hash + this.superpersonId;
+        hash = 71 * hash + Objects.hashCode(this.superpersonName);
+        hash = 71 * hash + Objects.hashCode(this.superpersonDescription);
+        hash = 71 * hash + Objects.hashCode(this.supertype);
+        hash = 71 * hash + Objects.hashCode(this.superpower);
+        hash = 71 * hash + Objects.hashCode(this.organizations);
         return hash;
     }
 
@@ -99,8 +110,11 @@ public class Superperson {
         if (!Objects.equals(this.superpower, other.superpower)) {
             return false;
         }
+        if (!Objects.equals(this.organizations, other.organizations)) {
+            return false;
+        }
         return true;
     }
-    
+
     
 }

@@ -13,7 +13,86 @@
   <body>
     <!-- Main Body of Page -->
 
-    
+    <div class="container">
+        <div class="row m-4">
+            <div class="col text-center border border-dark">
+                <h1><a href="/">Superhero Sightings</a></h1>
+            </div>
+        </div>
+        <div class="row m-4 border border-dark">
+            <div class="col text-center m-2">
+                <a href="superperson" class="btn btn-outline-primary btn-lg">Superpeople</a>
+            </div>
+            <div class="col text-center m-2">
+                <a href="superpower" class="btn btn-outline-primary btn-lg">Superpowers</a>
+            </div>
+            <div class="col text-center m-2">
+                <a href="location" class="btn btn-outline-primary btn-lg">Locations</a>
+            </div>
+            <div class="col text-center m-2">
+                <a href="organization" class="btn btn-outline-primary btn-lg">Organizations</a>
+            </div>
+            <div class="col text-center m-2">
+                <a href="sighting" class="btn btn-outline-primary btn-lg">Sightings</a>
+            </div>
+        </div>
+        <div class="row m-4 border border-dark">
+            <div class="col-3 text-center m-3">
+                <span class="h3">Edit Sighting</span>
+            </div>
+            <div class="col-7 text-center m-3">
+                <form action="editSighting" method="POST">
+                    <div class="form-group row">
+                        <label for="superpersonVal" class="col-3 col-form-label">
+                            Superperson</label>
+                        <select id="superpersonVal" name="superpersonVal" class="form-control col-9" >
+                            <option value="" selected disabled hidden>Superperson</option>
+                            <option th:each="superperson : ${superpeople}" 
+                                th:value="${superperson.superpersonId}" 
+                                th:text="${superperson.superpersonName}"
+                                th:selected="${superperson.superpersonId == sighting.superperson.superpersonId}">
+                            Superperson</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="locationVal" class="col-3 col-form-label">
+                            Location
+                        </label>
+                        <select id="locationVal" name="locationVal" class="form-control col-9" >
+                            <option value="" selected disabled hidden>Location</option>
+                            <option th:each="location : ${locations}" 
+                                th:value="${location.locationId}" 
+                                th:text="${location.locationName}"
+                                th:selected="${location.locationId == sighting.location.locationId}">
+                            Location</option>
+                        </select>
+                    </div>
+                    <div class="form-group row">
+                        <label for="dateVal" class="col-3 col-form-label">
+                            Date</label>
+                        <div class="col-9">
+                            <input type="date" name="dateVal" 
+                                   id="dateVal" class="form-control"
+                                   th:value="${sightingDate}"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="timeVal" class="col-3 col-form-label">
+                            Time</label>
+                        <div class="col-9">
+                            <input type="time" name="timeVal" 
+                                   id="timeVal" class="form-control"
+                                   th:value="${sightingTime}"/>
+                        </div>
+                    </div>
+                    <input type="hidden" name="sightingId" th:value="${sighting.sightingId}"/>
+                    <button type="submit" class="btn btn-primary">OK</button>
+                    <a href="sighting" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div> 
     
     <!-- End main body -->
     

@@ -36,6 +36,87 @@
                 <a href="sighting" class="btn btn-outline-primary btn-lg">Sightings</a>
             </div>
         </div>
+        <div class="row m-4 border border-dark">
+            <div class="col-3 text-center m-3">
+                <span class="h3">Add Sighting</span>
+            </div>
+            <div class="col-7 text-center m-3">
+                <form action="addSighting" method="POST">
+                    <div class="form-group row">
+                        <label for="superpersonVal" class="col-3 col-form-label">
+                            Superperson</label>
+                        <select id="superpersonVal" name="superpersonVal" class="form-control col-9" >
+                            <option value="" selected disabled hidden>Superperson</option>
+                            <option th:each="superperson : ${superpeople}" 
+                                th:value="${superperson.superpersonId}" 
+                                th:text="${superperson.superpersonName}">
+                            Superperson</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="locationVal" class="col-3 col-form-label">
+                            Location
+                        </label>
+                        <select id="locationVal" name="locationVal" class="form-control col-9" >
+                            <option value="" selected disabled hidden>Location</option>
+                            <option th:each="location : ${locations}" 
+                                th:value="${location.locationId}" 
+                                th:text="${location.locationName}">
+                            Location</option>
+                        </select>
+                    </div>
+                    <div class="form-group row">
+                        <label for="dateVal" class="col-3 col-form-label">
+                            Date</label>
+                        <div class="col-9">
+                            <input type="date" name="dateVal" 
+                                   id="dateVal" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="timeVal" class="col-3 col-form-label">
+                            Time</label>
+                        <div class="col-9">
+                            <input type="time" name="timeVal" 
+                                   id="timeVal" class="form-control"/>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </form>
+            </div>
+        </div>
+        <div class="row m-4">
+            <div class="col text-center m-3">
+                <table class="table table-striped">
+                    <thead>
+                        <h2>
+                            Sightings
+                        </h2>
+                        <tr>
+                            <th>ID</th>
+                            <th>Superperson</th>
+                            <th>Location</th>
+                            <th>Datetime</th>
+                            <th>Edit</th>
+                            <th>Details</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="sighting : ${sightings}">
+                            <td th:text="${sighting.sightingId}">Sighting ID</td>
+                            <td th:text="${sighting.superperson.superpersonName}">Superperson Name</td>
+                            <td th:text="${sighting.location.locationName}">Location Name</td>
+                            <td th:text="${sighting.sightingDatetime}">Sighting Datetime</td>
+                            <td><a href="#" th:href="@{/editSighting(id=${sighting.sightingId})}">Edit</a></td>
+                            <td><a href="#" th:href="@{/sightingDetail(id=${sighting.sightingId})}">Details</a></td>
+                            <td><a href="#" th:href="@{/confirmDeleteSighting(id=${sighting.sightingId})}">Delete</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div> 
     
     <!-- End main body -->

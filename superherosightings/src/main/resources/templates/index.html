@@ -15,11 +15,11 @@
 
     <div class="container">
         <div class="row m-4">
-            <div class="col text-center border border-dark">
+            <div class="col text-center">
                 <h1><a href="/">Superhero Sightings</a></h1>
             </div>
         </div>
-        <div class="row m-4 border border-dark">
+        <div class="row m-4">
             <div class="col text-center m-2">
                 <a href="superperson" class="btn btn-outline-primary btn-lg">Superpeople</a>
             </div>
@@ -40,7 +40,7 @@
         <hr>
         
         <div class="row m-4">
-            About
+            <h2>About</h2>
         </div>
         <div class="row m-4">
             <p>This program allows you to track your favorite superheroes!</p>
@@ -50,8 +50,7 @@
             <div class="col text-center m-3">
                 <table class="table table-striped">
                     <thead>
-                        
-                        Last 10 Sightings
+                        <h2>Last 10 Sightings</h2>
                         <tr>
                             <th>ID</th>
                             <th>Datetime</th>
@@ -66,7 +65,7 @@
                             <td th:text="${sighting.sightingDatetime}">Sighting Datetime</td>
                             <td th:text="${sighting.superperson.superpersonName}">Superperson Name</td>
                             <td th:text="${sighting.location.locationName}">Location</td>
-                            <td><a href="#" th:href="@{/sightingdetails(id=${sighting.sightingId})}">Details</a></td>
+                            <td><a href="#" th:href="@{/sightingDetail(id=${sighting.sightingId})}">Details</a></td>
                         </tr>
                     </tbody>
                 </table>

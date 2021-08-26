@@ -35,7 +35,8 @@ public class SightingDaoDB implements SightingDao {
 
     @Override
     public List<Sighting> getAllSightings() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final String SELECT_ALL_SIGHTINGS = "SELECT * FROM sighting";
+        return jdbc.query(SELECT_ALL_SIGHTINGS, new SightingMapper());
     }
 
     @Override
@@ -50,7 +51,8 @@ public class SightingDaoDB implements SightingDao {
 
     @Override
     public void deleteSightingById(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final String DELETE_SIGHTING = "DELETE FROM sighting WHERE sightingId = ?";
+        jdbc.update(DELETE_SIGHTING, id);
     }
 
     @Override

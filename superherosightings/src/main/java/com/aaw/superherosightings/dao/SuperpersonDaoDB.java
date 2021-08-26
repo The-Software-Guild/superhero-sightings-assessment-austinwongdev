@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -36,7 +37,8 @@ public class SuperpersonDaoDB implements SuperpersonDao {
 
     @Override
     public List<Superperson> getAllSuperpeople() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final String SELECT_ALL_SUPERPEOPLE = "SELECT * FROM superperson";
+        return jdbc.query(SELECT_ALL_SUPERPEOPLE, new SuperpersonMapper());
     }
 
     @Override
@@ -50,8 +52,14 @@ public class SuperpersonDaoDB implements SuperpersonDao {
     }
 
     @Override
+    @Transactional
     public void deleteSuperpersonById(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final String DELETE_MEMBERSHIP = "DELETE FROM membership WHERE superpersonId = ?";
+        jdbc.update(DELETE_MEMBERSHIP, id);
+        final String DELETE_SIGHTING = "DELETE FROM sighting WHERE superpersonId = ?";
+        jdbc.update(DELETE_SIGHTING, id);
+        final String DELETE_SUPERPERSON = "DELETE FROM superperson WHERE superpersonId = ?";
+        jdbc.update(DELETE_SUPERPERSON, id);
     }
 
     @Override

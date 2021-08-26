@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -35,7 +36,8 @@ public class OrganizationDaoDB implements OrganizationDao {
 
     @Override
     public List<Organization> getAllOrganizations() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final String SELECT_ALL_ORGANIZATIONS = "SELECT * FROM organization";
+        return jdbc.query(SELECT_ALL_ORGANIZATIONS, new OrganizationMapper());
     }
 
     @Override
@@ -49,8 +51,14 @@ public class OrganizationDaoDB implements OrganizationDao {
     }
 
     @Override
+    @Transactional
     public void deleteOrganizationById(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        final String DELETE_MEMBERSHIP = "DELETE FROM membership WHERE orgId = ?";
+        jdbc.update(DELETE_MEMBERSHIP, id);
+        
+        final String DELETE_ADDRESS_AND_ORGANIZATION = "DELETE organization, address FROM address INNER JOIN organization ON organization.addressId = address.addressId WHERE orgId = ?";
+        jdbc.update(DELETE_ADDRESS_AND_ORGANIZATION, id);
     }
 
     @Override

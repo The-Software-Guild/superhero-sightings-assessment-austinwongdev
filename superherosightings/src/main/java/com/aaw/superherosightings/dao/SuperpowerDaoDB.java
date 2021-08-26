@@ -33,7 +33,8 @@ public class SuperpowerDaoDB implements SuperpowerDao {
 
     @Override
     public List<Superpower> getAllSuperpowers() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final String SELECT_ALL_SUPERPOWERS = "SELECT * FROM superpower";
+        return jdbc.query(SELECT_ALL_SUPERPOWERS, new SuperpowerMapper());
     }
 
     @Override
@@ -48,7 +49,8 @@ public class SuperpowerDaoDB implements SuperpowerDao {
 
     @Override
     public void deleteSuperpowerById(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final String DELETE_SUPERPOWER = "DELETE FROM superpower WHERE superpowerId = ?";
+        jdbc.update(DELETE_SUPERPOWER, id);
     }
 
     public static final class SuperpowerMapper implements RowMapper<Superpower> {

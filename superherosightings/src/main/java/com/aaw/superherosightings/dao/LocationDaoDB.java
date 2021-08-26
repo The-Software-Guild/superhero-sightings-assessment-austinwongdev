@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -35,7 +36,8 @@ public class LocationDaoDB implements LocationDao {
 
     @Override
     public List<Location> getAllLocations() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final String SELECT_ALL_LOCATIONS = "SELECT * FROM location";
+        return jdbc.query(SELECT_ALL_LOCATIONS, new LocationMapper());
     }
 
     @Override
@@ -49,8 +51,13 @@ public class LocationDaoDB implements LocationDao {
     }
 
     @Override
+    @Transactional
     public void deleteLocationById(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final String DELETE_SIGHTINGS = "DELETE FROM sighting WHERE locationId = ?";
+        jdbc.update(DELETE_SIGHTINGS, id);
+        
+        final String DELETE_LOCATION_AND_ADDRESS = "DELETE location, address FROM location INNER JOIN address ON address.addressId = location.addressId WHERE locationId = ?";
+        jdbc.update(DELETE_LOCATION_AND_ADDRESS, id);
     }
 
     @Override

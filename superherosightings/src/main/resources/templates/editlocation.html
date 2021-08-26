@@ -13,7 +13,114 @@
   <body>
     <!-- Main Body of Page -->
 
-    
+    <div class="container">
+        <div class="row m-4">
+            <div class="col text-center border border-dark">
+                <h1><a href="/">Superhero Sightings</a></h1>
+            </div>
+        </div>
+        <div class="row m-4 border border-dark">
+            <div class="col text-center m-2">
+                <a href="superperson" class="btn btn-outline-primary btn-lg">Superpeople</a>
+            </div>
+            <div class="col text-center m-2">
+                <a href="superpower" class="btn btn-outline-primary btn-lg">Superpowers</a>
+            </div>
+            <div class="col text-center m-2">
+                <a href="location" class="btn btn-outline-primary btn-lg">Locations</a>
+            </div>
+            <div class="col text-center m-2">
+                <a href="organization" class="btn btn-outline-primary btn-lg">Organizations</a>
+            </div>
+            <div class="col text-center m-2">
+                <a href="sighting" class="btn btn-outline-primary btn-lg">Sightings</a>
+            </div>
+        </div>
+        <div class="row m-4 border border-dark">
+            <div class="col-3 text-center m-3">
+                <span class="h3">Edit Location</span>
+            </div>
+            <div class="col-7 text-center m-3">
+                <form action="editLocation" method="POST">
+                    <div class="form-group row">
+                        <label for="locationName" class="col-3 col-form-label">
+                            Name</label>
+                        <div class="col-9">
+                            <input type="text" name="locationName" 
+                                   id="locationName" class="form-control"
+                                   th:value="${location.locationName}" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="locationDescription" class="col-3 col-form-label">
+                            Description</label>
+                        <div class="col-9">
+                            <input type="text" name="locationDescription" 
+                                   id="locationDescription" class="form-control"
+                                   th:value="${location.locationDescription}" >
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                            <label for="latitude" class="col-3 col-form-label">
+                                    Latitude</label>
+                            <div class="col-9">
+                                    <input type="text" name="latitude" 
+                                               id="latitude" class="form-control"
+                                               th:value="${location.latitude}" />
+                            </div>
+                    </div>
+                    <div class="form-group row">
+                            <label for="longitude" class="col-3 col-form-label">
+                                    Longitude</label>
+                            <div class="col-9">
+                                    <input type="text" name="longitude" 
+                                               id="longitude" class="form-control"
+                                               th:value="${location.longitude}" />
+                            </div>
+                    </div>
+                    <div class="form-group row">
+                            <label for="addressLine" class="col-3 col-form-label">
+                                    Address</label>
+                            <div class="col-9">
+                                    <input type="text" name="addressLine" 
+                                               id="addressLine" class="form-control"
+                                               th:value="${location.address.address}" />
+                            </div>
+                    </div>
+                    <div class="form-group row">
+                            <label for="city" class="col-3 col-form-label">
+                                    City</label>
+                            <div class="col-9">
+                                    <input type="text" name="city" 
+                                               id="city" class="form-control"
+                                               th:value="${location.address.city}" />
+                            </div>
+                    </div>
+                    <div class="form-group row">
+                            <label for="state" class="col-3 col-form-label">
+                                    State</label>
+                            <div class="col-9">
+                                    <input type="text" name="state" 
+                                               id="state" class="form-control"
+                                               th:value="${location.address.state}" />
+                            </div>
+                    </div>
+                    <div class="form-group row">
+                            <label for="ZIP" class="col-3 col-form-label">
+                                    ZIP</label>
+                            <div class="col-9">
+                                    <input type="text" name="ZIP" 
+                                               id="ZIP" class="form-control"
+                                               th:value="${location.address.zip}" />
+                            </div>
+                    </div>
+                    <input type="hidden" name="locationId" th:value="${location.locationId}"/>
+                    <button type="submit" class="btn btn-primary">OK</button>
+                    <a href="location" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div> 
     
     <!-- End main body -->
     

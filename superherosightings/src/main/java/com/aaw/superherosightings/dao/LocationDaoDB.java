@@ -87,6 +87,10 @@ public class LocationDaoDB implements LocationDao {
     @Transactional
     public void updateLocation(Location location) {
         Address address = location.getAddress();
+        
+        final String SELECT_ADDRESS_ID_FROM_LOCATION = "SELECT addressId FROM location WHERE locationId = ?";
+        address.setAddressId(jdbc.queryForObject(SELECT_ADDRESS_ID_FROM_LOCATION, Integer.class, location.getLocationId()));
+        
         addressDao.updateAddress(address);
         
         final String UPDATE_LOCATION = "UPDATE location SET locationName = ?, locationDescription = ?, "

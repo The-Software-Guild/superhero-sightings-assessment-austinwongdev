@@ -69,4 +69,30 @@ public class LocationController {
         locationDao.addLocation(location);
         return "redirect:/location";
     }
+    
+    @GetMapping("editLocation")
+    public String editLocation(int id, Model model){
+        Location location = locationDao.getLocationById(id);
+        model.addAttribute("location", location);
+        return "editLocation";
+    }
+    
+    @PostMapping("editLocation")
+    public String editLocation(Location location, HttpServletRequest request){
+        Address address = new Address();
+        address.setAddress(request.getParameter("addressLine"));
+        address.setCity(request.getParameter("city"));
+        address.setState(request.getParameter("state"));
+        address.setZip(request.getParameter("ZIP"));
+        location.setAddress(address);
+        locationDao.updateLocation(location);
+        return "redirect:/locationDetail?id="+location.getLocationId();
+    }
+    
+    @GetMapping("locationDetail")
+    public String locationDetail(int id, Model model){
+        Location location = locationDao.getLocationById(id);
+        model.addAttribute("location", location);
+        return "locationDetail";
+    }
 }

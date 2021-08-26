@@ -13,7 +13,99 @@
   <body>
     <!-- Main Body of Page -->
 
-    
+    <div class="container">
+        <div class="row m-4">
+            <div class="col text-center border border-dark">
+                <h1><a href="/">Superhero Sightings</a></h1>
+            </div>
+        </div>
+        <div class="row m-4 border border-dark">
+            <div class="col text-center m-2">
+                <a href="superperson" class="btn btn-outline-primary btn-lg">Superpeople</a>
+            </div>
+            <div class="col text-center m-2">
+                <a href="superpower" class="btn btn-outline-primary btn-lg">Superpowers</a>
+            </div>
+            <div class="col text-center m-2">
+                <a href="location" class="btn btn-outline-primary btn-lg">Locations</a>
+            </div>
+            <div class="col text-center m-2">
+                <a href="organization" class="btn btn-outline-primary btn-lg">Organizations</a>
+            </div>
+            <div class="col text-center m-2">
+                <a href="sighting" class="btn btn-outline-primary btn-lg">Sightings</a>
+            </div>
+        </div>
+        <div class="row m-4 border border-dark">
+            <div class="col-3 text-center m-3">
+                <span class="h3">Edit Superperson</span>
+            </div>
+            <div class="col-7 text-center m-3">
+                <form action="editSuperperson" method="POST">
+                    <div class="form-group row">
+                        <label for="superpersonName" class="col-3 col-form-label">
+                            Name</label>
+                        <div class="col-9">
+                            <input type="text" name="superpersonName" 
+                                   id="superpersonName" class="form-control"
+                                   th:value="${superperson.superpersonName}" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="superpersonDescription" class="col-3 col-form-label">
+                            Description</label>
+                        <div class="col-9">
+                            <input type="text" name="superpersonDescription" 
+                                   id="superpersonDescription" class="form-control"
+                                   th:value="${superperson.superpersonDescription}"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="supertypeVal" class="col-3 col-form-label">
+                            Supertype
+                        </label>
+                        <select id="supertypeVal" name="supertypeVal" class="form-control col-9" >
+                            <option value="" selected disabled hidden>Supertype</option>
+                            <option th:each="supertype : ${supertypes}" 
+                                th:value="${supertype.supertypeId}" 
+                                th:text="${supertype.supertypeName}"
+                                th:selected="${superperson.supertype.supertypeId == supertype.supertypeId}">
+                            Supertype</option>
+                        </select>
+                    </div>
+                    <div class="form-group row">
+                        <label for="superpowerVal" class="col-3 col-form-label">
+                            Superpower
+                        </label>
+                        <select id="superpowerVal" name="superpowerVal" class="form-control col-9" >
+                            <option value="" selected disabled hidden>Superpower</option>
+                            <option th:each="superpower : ${superpowers}" 
+                                th:value="${superpower.superpowerId}" 
+                                th:text="${superpower.superpowerName}"
+                                th:selected="${superperson.superpower.superpowerId == superpower.superpowerId}">
+                            Superpower</option>
+                        </select>
+                    </div>
+                    <div class="form-group row">
+                        <label for ="organizationsVal" class="col-3 col-form-label">
+                            Organizations
+                        </label>
+                        <select multiple id="organizationsVal" name="organizationsVal" 
+                                    class="form-control col-9" >
+                            <option th:each="organization : ${organizations}" 
+                                    th:value="${organization.orgId}" 
+                                    th:text="${organization.orgName}"
+                                    th:selected="${superperson.organizations.contains(organization)}">
+                                Organizations</option>
+                        </select>
+                    </div>
+                    <input type="hidden" name="superpersonId" th:value="${superperson.superpersonId}"/>
+                    <button type="submit" class="btn btn-primary">OK</button>
+                    <a href="superperson" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div> 
     
     <!-- End main body -->
     

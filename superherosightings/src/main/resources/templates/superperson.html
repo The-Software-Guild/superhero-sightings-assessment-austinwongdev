@@ -36,6 +36,94 @@
                 <a href="sighting" class="btn btn-outline-primary btn-lg">Sightings</a>
             </div>
         </div>
+        <div class="row m-4 border border-dark">
+            <div class="col-3 text-center m-3">
+                <span class="h3">Add Superperson</span>
+            </div>
+            <div class="col-7 text-center m-3">
+                <form action="addSuperperson" method="POST">
+                    <div class="form-group row">
+                        <label for="superpersonName" class="col-3 col-form-label">
+                            Name</label>
+                        <div class="col-9">
+                            <input type="text" name="superpersonName" 
+                                   id="superpersonName" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="superpersonDescription" class="col-3 col-form-label">
+                            Description</label>
+                        <div class="col-9">
+                            <input type="text" name="superpersonDescription" 
+                                   id="superpersonDescription" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="supertypeVal" class="col-3 col-form-label">
+                            Supertype
+                        </label>
+                        <select id="supertypeVal" name="supertypeVal" class="form-control col-9" >
+                            <option value="" selected disabled hidden>Supertype</option>
+                            <option th:each="supertype : ${supertypes}" 
+                                th:value="${supertype.supertypeId}" 
+                                th:text="${supertype.supertypeName}">
+                            Supertype</option>
+                        </select>
+                    </div>
+                    <div class="form-group row">
+                        <label for="superpowerVal" class="col-3 col-form-label">
+                            Superpower
+                        </label>
+                        <select id="superpowerVal" name="superpowerVal" class="form-control col-9" >
+                            <option value="" selected disabled hidden>Superpower</option>
+                            <option th:each="superpower : ${superpowers}" 
+                                th:value="${superpower.superpowerId}" 
+                                th:text="${superpower.superpowerName}">
+                            Superpower</option>
+                        </select>
+                    </div>
+                    <div class="form-group row">
+                        <label for ="organizationsVal" class="col-3 col-form-label">
+                            Organizations
+                        </label>
+                        <select multiple id="organizationsVal" name="organizationsVal" 
+                                    class="form-control col-9" >
+                            <option th:each="organization : ${organizations}" 
+                                    th:value="${organization.orgId}" 
+                                    th:text="${organization.orgName}">
+                                Organizations</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </form>
+            </div>
+        </div>
+        <div class="row m-4">
+            <div class="col text-center m-3">
+                <table class="table table-striped">
+                    <thead>
+                        
+                        Superpeople
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Edit</th>
+                            <th>Details</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="superperson : ${superpeople}">
+                            <td th:text="${superperson.superpersonId}">Location ID</td>
+                            <td th:text="${superperson.superpersonName}">Location Name</td>
+                            <td><a href="#" th:href="@{/editSuperperson(id=${superperson.superpersonId})}">Edit</a></td>
+                            <td><a href="#" th:href="@{/superpersonDetail(id=${superperson.superpersonId})}">Details</a></td>
+                            <td><a href="#" th:href="@{/confirmDeleteSuperperson(id=${superperson.superpersonId})}">Delete</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div> 
     
     <!-- End main body -->

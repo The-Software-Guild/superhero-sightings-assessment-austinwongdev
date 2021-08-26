@@ -43,7 +43,7 @@ public class SightingController {
     SuperpersonDao superpersonDao;
     
     @GetMapping("sighting")
-    public String displaySuperpeople(Model model){
+    public String displaySighting(Model model){
         return "sighting";
     }
     

@@ -36,6 +36,106 @@
                 <a href="sighting" class="btn btn-outline-primary btn-lg">Sightings</a>
             </div>
         </div>
+        <div class="row m-4 border border-dark">
+            <div class="col-3 text-center m-3">
+                <span class="h3">Add Location</span>
+            </div>
+            <div class="col-7 text-center m-3">
+                <form action="addLocation" method="POST">
+                    <div class="form-group row">
+                        <label for="locationName" class="col-3 col-form-label">
+                            Name</label>
+                        <div class="col-9">
+                            <input type="text" name="locationName" 
+                                   id="locationName" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="locationDescription" class="col-3 col-form-label">
+                            Description</label>
+                        <div class="col-9">
+                            <input type="text" name="locationDescription" 
+                                   id="locationDescription" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                            <label for="latitude" class="col-3 col-form-label">
+                                    Latitude</label>
+                            <div class="col-9">
+                                    <input type="text" name="latitude" 
+                                               id="latitude" class="form-control"/>
+                            </div>
+                    </div>
+                    <div class="form-group row">
+                            <label for="longitude" class="col-3 col-form-label">
+                                    Longitude</label>
+                            <div class="col-9">
+                                    <input type="text" name="longitude" 
+                                               id="longitude" class="form-control"/>
+                            </div>
+                    </div>
+                    <div class="form-group row">
+                            <label for="address" class="col-3 col-form-label">
+                                    Address</label>
+                            <div class="col-9">
+                                    <input type="text" name="address" 
+                                               id="address" class="form-control"/>
+                            </div>
+                    </div>
+                    <div class="form-group row">
+                            <label for="city" class="col-3 col-form-label">
+                                    City</label>
+                            <div class="col-9">
+                                    <input type="text" name="city" 
+                                               id="city" class="form-control"/>
+                            </div>
+                    </div>
+                    <div class="form-group row">
+                            <label for="state" class="col-3 col-form-label">
+                                    State</label>
+                            <div class="col-9">
+                                    <input type="text" name="state" 
+                                               id="state" class="form-control"/>
+                            </div>
+                    </div>
+                    <div class="form-group row">
+                            <label for="ZIP" class="col-3 col-form-label">
+                                    ZIP</label>
+                            <div class="col-9">
+                                    <input type="text" name="ZIP" 
+                                               id="ZIP" class="form-control"/>
+                            </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </form>
+            </div>
+        </div>
+        <div class="row m-4">
+            <div class="col text-center m-3">
+                <table class="table table-striped">
+                    <thead>
+                        
+                        Locations
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Edit</th>
+                            <th>Details</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="location : ${locations}">
+                            <td th:text="${location.locationId}">Location ID</td>
+                            <td th:text="${location.locationName}">Location Name</td>
+                            <td><a href="#" th:href="@{/editLocation(id=${location.locationId})}">Edit</a></td>
+                            <td><a href="#" th:href="@{/locationDetail(id=${location.locationId})}">Details</a></td>
+                            <td><a href="#" th:href="@{/confirmDeleteLocation(id=${location.locationId})}">Delete</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div> 
     
     <!-- End main body -->

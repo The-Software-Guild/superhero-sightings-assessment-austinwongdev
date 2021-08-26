@@ -12,10 +12,16 @@ import com.aaw.superherosightings.dao.OrganizationDao;
 import com.aaw.superherosightings.dao.SightingDao;
 import com.aaw.superherosightings.dao.SuperpersonDao;
 import com.aaw.superherosightings.dao.SuperpowerDao;
+import com.aaw.superherosightings.model.Address;
+import com.aaw.superherosightings.model.Location;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import static org.apache.tomcat.jni.Buffer.address;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 /**
  *
@@ -41,7 +47,26 @@ public class LocationController {
     SuperpersonDao superpersonDao;
     
     @GetMapping("location")
-    public String displaySuperpeople(Model model){
+    public String displayLocations(Model model){
+        List<Location> locations = locationDao.getAllLocations();
+        model.addAttribute("locations", locations);
         return "location";
+    }
+    
+    @PostMapping("addLocation")
+    public String addLocation(HttpServletRequest request){
+        Address address = new Address();
+        address.setAddress(request.getParameter("address"));
+        address.setCity(request.getParameter("city"));
+        address.setState(request.getParameter("state"));
+        address.setZip(request.getParameter("ZIP"));
+        Location location = new Location();
+        location.setLatitude(Double.parseDouble(request.getParameter("latitude")));
+        location.setLongitude(Double.parseDouble(request.getParameter("longitude")));
+        location.setLocationDescription(request.getParameter("locationDescription"));
+        location.setLocationName(request.getParameter("locationName"));
+        location.setAddress(address);
+        locationDao.addLocation(location);
+        return "redirect:/location";
     }
 }

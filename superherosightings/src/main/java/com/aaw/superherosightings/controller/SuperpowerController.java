@@ -44,7 +44,7 @@ public class SuperpowerController {
     SuperpersonDao superpersonDao;
     
     @GetMapping("superpower")
-    public String displaySuperpeople(Model model){
+    public String displaySuperpowers(Model model){
         List<Superpower> superpowers = superpowerDao.getAllSuperpowers();
         model.addAttribute("superpowers", superpowers);
         return "superpower";

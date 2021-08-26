@@ -121,6 +121,7 @@ public class LocationDaoDBTest {
         organization1.setOrgName("Bird Squad");
         organization1.setPhone("555-555-5555");
         organization1.setSupertype(supertypeDao.getSupertypeById(1));
+        organization1.setMembers(new ArrayList<Superperson>());
         organization1 = organizationDao.addOrganization(organization1);
         organizations = new ArrayList<>();
         organizations.add(organization1);
@@ -290,7 +291,7 @@ public class LocationDaoDBTest {
         address3.setCity("Chicago");
         address3.setState("IL");
         address3.setZip("81111");
-        location3.setAddress(address2);
+        location3.setAddress(address3);
         location3.setLatitude(10.426441);
         location3.setLongitude(-10.766197);
         location3.setLocationDescription("Who knows where");

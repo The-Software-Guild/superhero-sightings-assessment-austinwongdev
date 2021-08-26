@@ -23,7 +23,6 @@ public interface SightingDao {
     void updateSighting(Sighting sighting);
     void deleteSightingById(int id);
     
-    List<Sighting> getSightingsByDate(LocalDate date);
     List<Sighting> getMostRecentSightings(int numSightings);
     
 }

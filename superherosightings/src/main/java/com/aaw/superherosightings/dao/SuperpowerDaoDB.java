@@ -12,9 +12,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -28,7 +30,12 @@ public class SuperpowerDaoDB implements SuperpowerDao {
     
     @Override
     public Superpower getSuperpowerById(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try{
+            final String SELECT_SUPERPOWER_BY_ID = "SELECT * FROM superpower WHERE superpowerId = ?";
+            return jdbc.queryForObject(SELECT_SUPERPOWER_BY_ID, new SuperpowerMapper(), id);
+        } catch (DataAccessException ex){
+            return null;
+        }
     }
 
     @Override
@@ -38,13 +45,25 @@ public class SuperpowerDaoDB implements SuperpowerDao {
     }
 
     @Override
+    @Transactional
     public Superpower addSuperpower(Superpower superpower) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final String INSERT_SUPERPOWER = "INSERT INTO superpower(superpowerName) "
+                + "VALUES(?)";
+        jdbc.update(INSERT_SUPERPOWER,
+                superpower.getSuperpowerName());
+        int newId = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
+        superpower.setSuperpowerId(newId);
+        return superpower;
     }
 
     @Override
     public void updateSuperpower(Superpower superpower) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final String UPDATE_SUPERPOWER = "UPDATE superpower "
+                + "SET superpowerName = ? "
+                + "WHERE superpowerId = ?";
+        jdbc.update(UPDATE_SUPERPOWER,
+                superpower.getSuperpowerName(),
+                superpower.getSuperpowerId());
     }
 
     @Override

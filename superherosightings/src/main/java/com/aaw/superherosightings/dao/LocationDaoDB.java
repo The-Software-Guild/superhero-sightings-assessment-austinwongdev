@@ -7,12 +7,15 @@
 
 package com.aaw.superherosightings.dao;
 
+import com.aaw.superherosightings.dao.AddressDaoDB.AddressMapper;
+import com.aaw.superherosightings.model.Address;
 import com.aaw.superherosightings.model.Location;
 import com.aaw.superherosightings.model.Superperson;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -28,26 +31,72 @@ public class LocationDaoDB implements LocationDao {
 
     @Autowired
     JdbcTemplate jdbc;
+    
+    @Autowired
+    AddressDao addressDao;
         
     @Override
     public Location getLocationById(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try{
+            final String SELECT_LOCATION_BY_ID = "SELECT * FROM location WHERE locationId = ?";
+            Location location = jdbc.queryForObject(SELECT_LOCATION_BY_ID, new LocationMapper(), id);
+            location.setAddress(getAddressForLocation(id));
+            return location;
+        } catch (DataAccessException ex){
+            return null;
+        }
+    }
+    
+    private Address getAddressForLocation(int id){
+        final String SELECT_ADDRESS_FOR_LOCATION = "SELECT a.* FROM address a "
+                + "INNER JOIN location l ON l.addressId = a.addressId WHERE l.locationId = ?";
+        return jdbc.queryForObject(SELECT_ADDRESS_FOR_LOCATION, new AddressMapper(), id);
     }
 
     @Override
     public List<Location> getAllLocations() {
         final String SELECT_ALL_LOCATIONS = "SELECT * FROM location";
-        return jdbc.query(SELECT_ALL_LOCATIONS, new LocationMapper());
+        List<Location> locations =  jdbc.query(SELECT_ALL_LOCATIONS, new LocationMapper());
+        for (Location location : locations){
+            location.setAddress(getAddressForLocation(location.getLocationId()));
+        }
+        return locations;
     }
 
     @Override
+    @Transactional
     public Location addLocation(Location location) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        Address address = location.getAddress();
+        location.setAddress(addressDao.addAddress(address));
+        
+        final String INSERT_LOCATION = "INSERT INTO location(locationName, locationDescription, latitude, longitude, addressId) "
+                + "VALUES(?,?,?,?,?)";
+        jdbc.update(INSERT_LOCATION,
+                location.getLocationName(),
+                location.getLocationDescription(),
+                location.getLatitude(),
+                location.getLongitude(),
+                location.getAddress().getAddressId());
+        int newLocationId = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
+        location.setLocationId(newLocationId);
+        return location;
     }
 
     @Override
+    @Transactional
     public void updateLocation(Location location) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Address address = location.getAddress();
+        addressDao.updateAddress(address);
+        
+        final String UPDATE_LOCATION = "UPDATE location SET locationName = ?, locationDescription = ?, "
+                + "latitude = ?, longitude = ? WHERE locationId = ?";
+        jdbc.update(UPDATE_LOCATION,
+                location.getLocationName(),
+                location.getLocationDescription(),
+                location.getLatitude(),
+                location.getLongitude(),
+                location.getLocationId());
     }
 
     @Override
@@ -62,7 +111,14 @@ public class LocationDaoDB implements LocationDao {
 
     @Override
     public List<Location> getLocationsForSuperperson(Superperson superperson) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final String SELECT_LOCATIONS_FOR_SUPERPERSON = "SELECT l.* FROM location l "
+                + "INNER JOIN sighting s ON s.locationId = l.locationId WHERE "
+                + "s.superpersonId = ?";
+        List<Location> locations = jdbc.query(SELECT_LOCATIONS_FOR_SUPERPERSON, new LocationMapper(), superperson.getSuperpersonId());
+        for (Location location : locations){
+            location.setAddress(getAddressForLocation(location.getLocationId()));
+        }
+        return locations;
     }
 
     public static final class LocationMapper implements RowMapper<Location> {

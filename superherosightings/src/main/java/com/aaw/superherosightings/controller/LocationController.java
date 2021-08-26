@@ -89,6 +89,19 @@ public class LocationController {
         return "redirect:/locationDetail?id="+location.getLocationId();
     }
     
+    @GetMapping("confirmDeleteLocation")
+    public String confirmDeleteLocation(int id, Model model){
+        Location location = locationDao.getLocationById(id);
+        model.addAttribute("location", location);
+        return "confirmDeleteLocation";
+    }
+    
+    @GetMapping("deleteLocation")
+    public String deleteLocation(int id){
+        locationDao.deleteLocationById(id);
+        return "redirect:/location";
+    }
+    
     @GetMapping("locationDetail")
     public String locationDetail(int id, Model model){
         Location location = locationDao.getLocationById(id);

@@ -137,6 +137,9 @@ public class OrganizationDaoDB implements OrganizationDao {
         
         // Update address table
         Address address = organization.getAddress();
+        final String SELECT_ADDRESS_ID_FOR_ORGANIZATION = "SELECT addressId FROM organization WHERE orgId = ?";
+        int addressId = jdbc.queryForObject(SELECT_ADDRESS_ID_FOR_ORGANIZATION, Integer.class, organization.getOrgId());
+        address.setAddressId(addressId);
         addressDao.updateAddress(address);
         
         // Update organization table

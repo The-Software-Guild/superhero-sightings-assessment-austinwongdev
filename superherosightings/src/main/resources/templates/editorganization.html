@@ -13,7 +13,131 @@
   <body>
     <!-- Main Body of Page -->
 
-    
+    <div class="container">
+        <div class="row m-4">
+            <div class="col text-center border border-dark">
+                <h1><a href="/">Superhero Sightings</a></h1>
+            </div>
+        </div>
+        <div class="row m-4 border border-dark">
+            <div class="col text-center m-2">
+                <a href="superperson" class="btn btn-outline-primary btn-lg">Superpeople</a>
+            </div>
+            <div class="col text-center m-2">
+                <a href="superpower" class="btn btn-outline-primary btn-lg">Superpowers</a>
+            </div>
+            <div class="col text-center m-2">
+                <a href="location" class="btn btn-outline-primary btn-lg">Locations</a>
+            </div>
+            <div class="col text-center m-2">
+                <a href="organization" class="btn btn-outline-primary btn-lg">Organizations</a>
+            </div>
+            <div class="col text-center m-2">
+                <a href="sighting" class="btn btn-outline-primary btn-lg">Sightings</a>
+            </div>
+        </div>
+        <div class="row m-4 border border-dark">
+            <div class="col-3 text-center m-3">
+                <span class="h3">Edit Organization</span>
+            </div>
+            <div class="col-7 text-center m-3">
+                <form action="editOrganization" method="POST">
+                    <div class="form-group row">
+                        <label for="orgName" class="col-3 col-form-label">
+                            Name</label>
+                        <div class="col-9">
+                            <input type="text" name="orgName" 
+                                   id="orgName" class="form-control" th:value="${organization.orgName}" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="orgDescription" class="col-3 col-form-label">
+                            Description</label>
+                        <div class="col-9">
+                            <input type="text" name="orgDescription" 
+                                   id="orgDescription" class="form-control" th:value="${organization.orgDescription}" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                            <label for="email" class="col-3 col-form-label">
+                                    Email</label>
+                            <div class="col-9">
+                                    <input type="text" name="email" 
+                                               id="email" class="form-control" th:value="${organization.email}" />
+                            </div>
+                    </div>
+                    <div class="form-group row">
+                            <label for="phone" class="col-3 col-form-label">
+                                    Phone</label>
+                            <div class="col-9">
+                                    <input type="text" name="phone" 
+                                               id="phone" class="form-control" th:value="${organization.phone}" />
+                            </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="supertypeVal" class="col-3 col-form-label">
+                            Supertype
+                        </label>
+                        <select id="supertypeVal" name="supertypeVal" class="form-control col-9" >
+                            <option th:each="supertype : ${supertypes}" 
+                                    th:value="${supertype.supertypeId}" 
+                                    th:text="${supertype.supertypeName}"
+                                    th:selected="${organization.supertype.supertypeId == supertype.supertypeId}">
+                            Supertype</option>
+                        </select>
+                    </div>
+                    <div class="form-group row">
+                            <label for="addressLine" class="col-3 col-form-label">
+                                    Address</label>
+                            <div class="col-9">
+                                    <input type="text" name="addressLine" 
+                                               id="addressLine" class="form-control" th:value="${organization.address.address}" />
+                            </div>
+                    </div>
+                    <div class="form-group row">
+                            <label for="city" class="col-3 col-form-label">
+                                    City</label>
+                            <div class="col-9">
+                                    <input type="text" name="city" 
+                                               id="city" class="form-control" th:value="${organization.address.city}" />
+                            </div>
+                    </div>
+                    <div class="form-group row">
+                            <label for="state" class="col-3 col-form-label">
+                                    State</label>
+                            <div class="col-9">
+                                    <input type="text" name="state" 
+                                               id="state" class="form-control" th:value="${organization.address.state}" />
+                            </div>
+                    </div>
+                    <div class="form-group row">
+                            <label for="zip" class="col-3 col-form-label">
+                                    ZIP</label>
+                            <div class="col-9">
+                                    <input type="text" name="zip" 
+                                               id="zip" class="form-control" th:value="${organization.address.zip}" />
+                            </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for ="memberIds" class="col-3 col-form-label">
+                            Members
+                        </label>
+                        <select multiple id="memberIds" name="memberIds" 
+                                    class="form-control col-9" >
+                            <option th:each="superperson : ${members}" 
+                                    th:value="${superperson.superpersonId}" 
+                                    th:text="${superperson.superpersonName}"
+                                    th:selected="${organization.members.contains(superperson)}">
+                                Members</option>
+                        </select>
+                    </div>
+                    <input type="hidden" name="orgId" th:value="${organization.orgId}"/>
+                    <button type="submit" class="btn btn-primary">OK</button>
+                    <a href="organization" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div> 
     
     <!-- End main body -->
     

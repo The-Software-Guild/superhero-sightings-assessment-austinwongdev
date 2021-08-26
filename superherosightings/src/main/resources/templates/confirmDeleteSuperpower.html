@@ -38,33 +38,27 @@
         </div>
         <div class="row m-4">
             <div class="col-3 text-center m-3">
-                <span class="h3">Edit Superpower</span>
+                <span class="h3">Delete Superpower</span>
             </div>
         </div>
-        <form action="editSuperpower" method="POST">
-            <div class="form-group row">
-                <div class="col-3 text-right"><strong>ID</strong></div>
-                <div class="col-9 text-left">
-                    <span th:text="${superpower.superpowerId}">display id</span>
-                </div>
+        <div class="row m-4">
+            <div class="col-6 text-right"><strong>ID</strong></div>
+            <div class="col-6 text-left">
+                <span th:text="${superpower.superpowerId}">display id</span>
             </div>
-            <div class="form-group row">
-                <label for="superpowerName" class="col-3 col-form-label">Name</label>
-                <div class="col-9">
-                    <input type="text" name="superpowerName" id="superpowerName" class="form-control"
-                                   th:value="${superpower.superpowerName}"/>
-                </div>
+            <div class="col-6 text-right"><strong>Name</strong></div>
+            <div class="col-6 text-left">
+                <span th:text="${superpower.superpowerName}">display superpower name</span>
             </div>
-            <div class="form-group row">
-                <div class="col-3 text-right">
-                    <input type="hidden" name="superpowerId" th:value="${superpower.superpowerId}"/>
-                    <button type="submit" class="btn btn-primary">OK</button>
-                </div>
-                <div class="col-9 text-left">
-                    <a href="superpower" class="btn btn-secondary">Cancel</button>
-                </div>
+        </div>
+        <div class="row m-4">
+            <div class="col-6 text-center">
+                <a href="#" th:href="@{/deleteSuperpower(id=${superpower.superpowerId})}" class="btn btn-outline-primary btn-lg">OK</a>
             </div>
-        </form>
+            <div class="col-6 text-center">
+                <a href="superpower" class="btn btn-outline-primary btn-lg">Cancel</a>
+            </div>
+        </div>
     </div> 
     
     <!-- End main body -->

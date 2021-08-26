@@ -13,7 +13,74 @@
   <body>
     <!-- Main Body of Page -->
 
-    
+    <div class="container">
+        <div class="row m-4">
+            <div class="col text-center border border-dark">
+                <h1><a href="/">Superhero Sightings</a></h1>
+            </div>
+        </div>
+        <div class="row m-4 border border-dark">
+            <div class="col text-center m-2">
+                <a href="superperson" class="btn btn-outline-primary btn-lg">Superpeople</a>
+            </div>
+            <div class="col text-center m-2">
+                <a href="superpower" class="btn btn-outline-primary btn-lg">Superpowers</a>
+            </div>
+            <div class="col text-center m-2">
+                <a href="location" class="btn btn-outline-primary btn-lg">Locations</a>
+            </div>
+            <div class="col text-center m-2">
+                <a href="organization" class="btn btn-outline-primary btn-lg">Organizations</a>
+            </div>
+            <div class="col text-center m-2">
+                <a href="sighting" class="btn btn-outline-primary btn-lg">Sightings</a>
+            </div>
+        </div>
+        <div class="row m-4 border border-dark">
+            <div class="col-3 text-center m-3">
+                <span class="h3">Add Superpower</span>
+            </div>
+            <div class="col-7 text-center m-3">
+                <form action="addSuperpower" method="POST">
+                    <div class="form-group row">
+                        <label for="superpowerName" class="col-3 col-form-label">
+                            Name</label>
+                        <div class="col-9">
+                            <input type="text" name="superpowerName" 
+                                   id="superpowerName" class="form-control"/>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </form>
+            </div>
+        </div>
+        <div class="row m-4">
+            <div class="col text-center m-3">
+                <table class="table table-striped">
+                    <thead>
+                        
+                        Superpowers
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Edit</th>
+                            <th>Details</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="superpower : ${superpowers}">
+                            <td th:text="${superpower.superpowerId}">Superpower ID</td>
+                            <td th:text="${superpower.superpowerName}">Superpower Name</td>
+                            <td><a href="#" th:href="@{/editSuperpower(id=${superpower.superpowerId})}">Edit</a></td>
+                            <td><a href="#" th:href="@{/superpowerDetail(id=${superpower.superpowerId})}">Details</a></td>
+                            <td><a href="#" th:href="@{/confirmDeleteSuperpower(id=${superpower.superpowerId})}">Delete</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div> 
     
     <!-- End main body -->
     

@@ -47,8 +47,8 @@ public class SuperpowerDaoDB implements SuperpowerDao {
     @Override
     @Transactional
     public Superpower addSuperpower(Superpower superpower) {
-        final String INSERT_SUPERPOWER = "INSERT INTO superpower(superpowerName) "
-                + "VALUES(?)";
+        final String INSERT_SUPERPOWER = "INSERT INTO superpower (superpowerName) "
+                + "VALUES (?)";
         jdbc.update(INSERT_SUPERPOWER,
                 superpower.getSuperpowerName());
         int newId = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);

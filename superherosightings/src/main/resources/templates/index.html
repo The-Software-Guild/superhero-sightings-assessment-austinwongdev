@@ -13,7 +13,66 @@
   <body>
     <!-- Main Body of Page -->
 
-    
+    <div class="container">
+        <div class="row m-4">
+            <div class="col text-center border border-dark">
+                <h1><a href="/">Superhero Sightings</a></h1>
+            </div>
+        </div>
+        <div class="row m-4 border border-dark">
+            <div class="col text-center m-2">
+                <a href="superperson" class="btn btn-outline-primary btn-lg">Superpeople</a>
+            </div>
+            <div class="col text-center m-2">
+                <a href="superpower" class="btn btn-outline-primary btn-lg">Superpowers</a>
+            </div>
+            <div class="col text-center m-2">
+                <a href="location" class="btn btn-outline-primary btn-lg">Locations</a>
+            </div>
+            <div class="col text-center m-2">
+                <a href="organization" class="btn btn-outline-primary btn-lg">Organizations</a>
+            </div>
+            <div class="col text-center m-2">
+                <a href="sighting" class="btn btn-outline-primary btn-lg">Sightings</a>
+            </div>
+        </div>
+        
+        <hr>
+        
+        <div class="row m-4">
+            About
+        </div>
+        <div class="row m-4">
+            <p>This program allows you to track your favorite superheroes!</p>
+        </div>
+        
+        <div class="row m-4">
+            <div class="col text-center m-3">
+                <table class="table table-striped">
+                    <thead>
+                        
+                        Last 10 Sightings
+                        <tr>
+                            <th>ID</th>
+                            <th>Datetime</th>
+                            <th>Superperson</th>
+                            <th>Location</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="sighting : ${sightings}">
+                            <td th:text="${sighting.sightingId}">Sighting ID</td>
+                            <td th:text="${sighting.sightingDatetime}">Sighting Datetime</td>
+                            <td th:text="${sighting.superperson.superpersonName}">Superperson Name</td>
+                            <td th:text="${sighting.location.locationName}">Location</td>
+                            <td><a href="#" th:href="@{/sightingdetails(id=${sighting.sightingId})}">Details</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div> 
     
     <!-- End main body -->
     

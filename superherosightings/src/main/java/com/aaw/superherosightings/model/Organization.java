@@ -40,10 +40,7 @@ public class Organization {
     @Pattern(regexp="^[0-9]{3}-[0-9]{3}-[0-9]{4}$", message="Phone must match pattern 555-555-5555")
     private String phone;
     
-    @NotBlank(message = "Address must not be empty.")
-    @Size(max=50, message = "Address must be less than 50 characters.")
     private Address address;
-    
     private Supertype supertype;
     private List<Superperson> members;
 

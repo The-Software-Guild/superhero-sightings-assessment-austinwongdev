@@ -23,9 +23,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -137,7 +139,11 @@ public class OrganizationController {
     }
     
     @PostMapping("editOrganization")
-    public String editOrganization(Organization organization, HttpServletRequest request){
+    public String editOrganization(@Valid Organization organization, BindingResult result, HttpServletRequest request, Model model){
+        
+        if (result.hasErrors()){
+            return "redirect:/editOrganization?id="+organization.getOrgId();
+        }
         
         Address address = new Address();
         address.setAddress(request.getParameter("addressLine"));

@@ -67,11 +67,13 @@ public class LocationController {
     
     @PostMapping("addLocation")
     public String addLocation(HttpServletRequest request){
+        
         Address address = new Address();
         address.setAddress(request.getParameter("address"));
         address.setCity(request.getParameter("city"));
         address.setState(request.getParameter("state"));
         address.setZip(request.getParameter("ZIP"));
+        
         Location location = new Location();
         location.setLatitude(Double.parseDouble(request.getParameter("latitude")));
         location.setLongitude(Double.parseDouble(request.getParameter("longitude")));
@@ -98,6 +100,7 @@ public class LocationController {
     
     @PostMapping("editLocation")
     public String editLocation(@Valid Location location, BindingResult result, HttpServletRequest request, Model model){
+        
         Address address = new Address();
         address.setAddress(request.getParameter("addressLine"));
         address.setCity(request.getParameter("city"));

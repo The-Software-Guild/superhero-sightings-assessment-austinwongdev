@@ -20,6 +20,6 @@ public interface SuperpowerDao {
     List<Superpower> getAllSuperpowers();
     Superpower addSuperpower(Superpower superpower);
     void updateSuperpower(Superpower superpower);
-    void deleteSuperpowerById(int id);
+    boolean deleteSuperpowerById(int id);
     
 }

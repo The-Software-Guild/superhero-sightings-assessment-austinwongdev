@@ -66,20 +66,12 @@ public class SightingDaoDB implements SightingDao {
     }
     
     private Location getLocationForSighting(int id){
-//        final String SELECT_LOCATION_FOR_SIGHTING = "SELECT l.* FROM location l "
-//                + "INNER JOIN sighting s ON s.locationId = l.locationId "
-//                + "WHERE s.sightingId = ?";
-//        return jdbc.queryForObject(SELECT_LOCATION_FOR_SIGHTING, new LocationMapper(), id);
         final String SELECT_LOCATION_ID_FOR_SIGHTING = "SELECT locationId FROM sighting WHERE sightingId = ?";
         int locationId = jdbc.queryForObject(SELECT_LOCATION_ID_FOR_SIGHTING, Integer.class, id);
         return locationDao.getLocationById(locationId);
     }
     
     private Superperson getSuperpersonForSighting(int id){
-//        final String SELECT_SUPERPERSON_FOR_SIGHTING = "SELECT sp.* FROM superperson sp "
-//                + "INNER JOIN sighting s ON s.superpersonId = sp.superpersonId "
-//                + "WHERE s.sightingId = ?";
-//        return jdbc.queryForObject(SELECT_SUPERPERSON_FOR_SIGHTING, new SuperpersonMapper(), id);
         final String SELECT_SUPERPERSON_ID_FOR_SIGHTING = "SELECT superpersonId FROM sighting WHERE sightingId = ?";
         int superpersonId = jdbc.queryForObject(SELECT_SUPERPERSON_ID_FOR_SIGHTING, Integer.class, id);
         return superpersonDao.getSuperpersonById(superpersonId);

@@ -69,13 +69,15 @@ public class SuperpowerDaoDB implements SuperpowerDao {
     }
 
     @Override
-    public void deleteSuperpowerById(int id) {
+    public boolean deleteSuperpowerById(int id) {
         final String SELECT_SUPERPEOPLE_WITH_SUPERPOWER = "SELECT * FROM superperson WHERE superpowerId = ?";
         List<Superperson> superpeopleWithSuperpower = jdbc.query(SELECT_SUPERPEOPLE_WITH_SUPERPOWER, new SuperpersonMapper(), id);
         if (superpeopleWithSuperpower == null || superpeopleWithSuperpower.isEmpty()){
             final String DELETE_SUPERPOWER = "DELETE FROM superpower WHERE superpowerId = ?";
             jdbc.update(DELETE_SUPERPOWER, id);
+            return true;
         }
+        return false;
     }
 
     public static final class SuperpowerMapper implements RowMapper<Superpower> {

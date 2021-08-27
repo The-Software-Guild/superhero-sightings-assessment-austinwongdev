@@ -58,13 +58,16 @@ public class SightingController {
     
     @GetMapping("sighting")
     public String displaySighting(Model model){
-        model.addAttribute("errors", errors);
+        
         List<Sighting> sightings = sightingDao.getAllSightings();
-        model.addAttribute("sightings", sightings);
         List<Superperson> superpeople = superpersonDao.getAllSuperpeople();
-        model.addAttribute("superpeople", superpeople);
         List<Location> locations = locationDao.getAllLocations();
+        
+        model.addAttribute("errors", errors);
+        model.addAttribute("sightings", sightings);
+        model.addAttribute("superpeople", superpeople);
         model.addAttribute("locations", locations);
+        
         return "sighting";
     }
     
@@ -127,14 +130,17 @@ public class SightingController {
     
     @GetMapping("editSighting")
     public String editSighting(int id, Model model){
+        
         List<Superperson> superpeople = superpersonDao.getAllSuperpeople();
-        model.addAttribute("superpeople", superpeople);
         List<Location> locations = locationDao.getAllLocations();
-        model.addAttribute("locations", locations);
         Sighting sighting = sightingDao.getSightingById(id);
+        
+        model.addAttribute("superpeople", superpeople);
+        model.addAttribute("locations", locations);
         model.addAttribute("sighting", sighting);
         model.addAttribute("sightingDate", sighting.getSightingDatetime().toLocalDate());
         model.addAttribute("sightingTime", sighting.getSightingDatetime().toLocalTime());
+        
         return "editSighting";
     }
     
@@ -203,27 +209,33 @@ public class SightingController {
     
     @GetMapping("sightingDetail")
     public String sightingDetail(int id, Model model){
+        
         List<Superperson> superpeople = superpersonDao.getAllSuperpeople();
-        model.addAttribute("superpeople", superpeople);
         List<Location> locations = locationDao.getAllLocations();
-        model.addAttribute("locations", locations);
         Sighting sighting = sightingDao.getSightingById(id);
+        
+        model.addAttribute("superpeople", superpeople);
+        model.addAttribute("locations", locations);
         model.addAttribute("sighting", sighting);
         model.addAttribute("sightingDate", sighting.getSightingDatetime().toLocalDate());
         model.addAttribute("sightingTime", sighting.getSightingDatetime().toLocalTime());
+        
         return "sightingDetail";
     }
     
     @GetMapping("confirmDeleteSighting")
     public String confirmDeleteSighting(int id, Model model){
+        
         List<Superperson> superpeople = superpersonDao.getAllSuperpeople();
-        model.addAttribute("superpeople", superpeople);
         List<Location> locations = locationDao.getAllLocations();
-        model.addAttribute("locations", locations);
         Sighting sighting = sightingDao.getSightingById(id);
+        
+        model.addAttribute("superpeople", superpeople);
+        model.addAttribute("locations", locations);
         model.addAttribute("sighting", sighting);
         model.addAttribute("sightingDate", sighting.getSightingDatetime().toLocalDate());
         model.addAttribute("sightingTime", sighting.getSightingDatetime().toLocalTime());
+        
         return "confirmDeleteSighting";
     }
     

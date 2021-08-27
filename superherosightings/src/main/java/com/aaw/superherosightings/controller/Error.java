@@ -14,6 +14,7 @@ package com.aaw.superherosightings.controller;
 public class Error {
 
     private String message;
+    private boolean old;
 
     public Error(String message) {
         this.message = message;
@@ -25,6 +26,14 @@ public class Error {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public boolean isOld() {
+        return old;
+    }
+
+    public void setOld(boolean old) {
+        this.old = old;
     }
     
 }

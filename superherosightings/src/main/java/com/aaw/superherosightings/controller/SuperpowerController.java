@@ -16,6 +16,7 @@ import com.aaw.superherosightings.model.Superpower;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
 import javax.validation.Validation;
@@ -51,13 +52,24 @@ public class SuperpowerController {
     SuperpersonDao superpersonDao;
     
     Set<ConstraintViolation<Superpower>> violations = new HashSet<>();
+    Set<Error> customErrors = new HashSet<>();
     
     @GetMapping("superpower")
     public String displaySuperpowers(Model model){
-        model.addAttribute("errors", violations);
+        
         List<Superpower> superpowers = superpowerDao.getAllSuperpowers();
+        
+        refreshCustomErrors();
+        model.addAttribute("errors", violations);
+        model.addAttribute("customErrors", customErrors);
         model.addAttribute("superpowers", superpowers);
+        
         return "superpower";
+    }
+    
+    private void refreshCustomErrors(){
+        customErrors = customErrors.stream().filter(e -> e.isOld() == false).collect(Collectors.toSet());
+        customErrors.stream().forEach(e -> e.setOld(true));
     }
     
     @PostMapping("addSuperpower")
@@ -66,9 +78,9 @@ public class SuperpowerController {
         Superpower superpower = new Superpower();
         superpower.setSuperpowerName(superpowerName);
         
+        // Validate
         Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
         violations = validate.validate(superpower);
-        
         if(violations.isEmpty()){
             superpowerDao.addSuperpower(superpower);
         }
@@ -78,9 +90,11 @@ public class SuperpowerController {
     
     @PostMapping("editSuperpower")
     public String editSuperpower(@Valid Superpower superpower, BindingResult result){
+        
         if (result.hasErrors()){
             return "editSuperpower";
         }
+        
         superpowerDao.updateSuperpower(superpower);
         return "redirect:/superpowerDetail?id="+superpower.getSuperpowerId();
     }
@@ -95,14 +109,20 @@ public class SuperpowerController {
     @GetMapping("confirmDeleteSuperpower")
     public String confirmDeleteSuperpower(int id, Model model){
         Superpower superpower = superpowerDao.getSuperpowerById(id);
+        
+        model.addAttribute("customErrors", customErrors);
         model.addAttribute("superpower", superpower);
+        
         return "confirmDeleteSuperpower";
     }
     
     @GetMapping("deleteSuperpower")
     public String deleteSuperpower(int id){
-        
-        superpowerDao.deleteSuperpowerById(id);
+        if (!superpowerDao.deleteSuperpowerById(id)){
+            customErrors.add(new Error("Superpower in use. Must edit or delete superpeople with superpower first."));
+        } else{
+            customErrors.clear();
+        }
         return "redirect:/superpower";
     }
     

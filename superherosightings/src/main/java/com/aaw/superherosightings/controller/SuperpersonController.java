@@ -62,16 +62,19 @@ public class SuperpersonController {
     
     @GetMapping("superperson")
     public String displaySuperpeople(Model model){
+        
+        List<Superpower> superpowers = superpowerDao.getAllSuperpowers();
+        List<Organization> organizations = organizationDao.getAllOrganizations();
+        List<Supertype> supertypes = supertypeDao.getAllSupertypes();
+        List<Superperson> superpeople = superpersonDao.getAllSuperpeople();
+        
+        model.addAttribute("superpowers", superpowers);
+        model.addAttribute("organizations", organizations);
+        model.addAttribute("supertypes", supertypes);
+        model.addAttribute("superpeople", superpeople);
         model.addAttribute("customErrors", customErrors);
         model.addAttribute("errors", violations);
-        List<Superpower> superpowers = superpowerDao.getAllSuperpowers();
-        model.addAttribute("superpowers", superpowers);
-        List<Organization> organizations = organizationDao.getAllOrganizations();
-        model.addAttribute("organizations", organizations);
-        List<Supertype> supertypes = supertypeDao.getAllSupertypes();
-        model.addAttribute("supertypes", supertypes);
-        List<Superperson> superpeople = superpersonDao.getAllSuperpeople();
-        model.addAttribute("superpeople", superpeople);
+        
         return "superperson";
     }
     
@@ -103,9 +106,9 @@ public class SuperpersonController {
         Superpower superpower = superpowerDao.getSuperpowerById(superpowerId);
         superperson.setSuperpower(superpower);
         
+        // Validate
         Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
         violations = validate.validate(superperson);
-        
         if (violations.isEmpty() && customErrors.isEmpty()){
             superpersonDao.addSuperperson(superperson);
         }
@@ -116,18 +119,21 @@ public class SuperpersonController {
     
     @GetMapping("editSuperperson")
     public String editSuperperson(int id, Model model){
+        
+        List<Superpower> superpowers = superpowerDao.getAllSuperpowers();
+        List<Organization> organizations = organizationDao.getAllOrganizations();
+        List<Supertype> supertypes = supertypeDao.getAllSupertypes();
+        Superperson superperson = superpersonDao.getSuperpersonById(id);
+        List<Organization> superpersonOrganizations = organizationDao.getOrganizationsForSuperperson(superperson);
+        
+        model.addAttribute("superpowers", superpowers);
+        model.addAttribute("organizations", organizations);
+        model.addAttribute("supertypes", supertypes);
+        model.addAttribute("superperson", superperson);
+        model.addAttribute("superpersonOrganizations", superpersonOrganizations);
         model.addAttribute("customErrors", customErrors);
         model.addAttribute("errors", violations);
-        List<Superpower> superpowers = superpowerDao.getAllSuperpowers();
-        model.addAttribute("superpowers", superpowers);
-        List<Organization> organizations = organizationDao.getAllOrganizations();
-        model.addAttribute("organizations", organizations);
-        List<Supertype> supertypes = supertypeDao.getAllSupertypes();
-        model.addAttribute("supertypes", supertypes);
-        Superperson superperson = superpersonDao.getSuperpersonById(id);
-        model.addAttribute("superperson", superperson);
-        List<Organization> superpersonOrganizations = organizationDao.getOrganizationsForSuperperson(superperson);
-        model.addAttribute("superpersonOrganizations", superpersonOrganizations);
+        
         return "editSuperperson";
     }
     
@@ -159,9 +165,9 @@ public class SuperpersonController {
         Superpower superpower = superpowerDao.getSuperpowerById(superpowerId);
         superperson.setSuperpower(superpower);
         
+        // Validate
         Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
         violations = validate.validate(superperson);
-        
         if (violations.isEmpty() && customErrors.isEmpty()){
             superpersonDao.updateSuperperson(superperson);
             return "redirect:/superpersonDetail?id="+superperson.getSuperpersonId();
@@ -172,27 +178,33 @@ public class SuperpersonController {
     
     @GetMapping("superpersonDetail")
     public String superpersonDetail(int id, Model model){
+        
         Superperson superperson = superpersonDao.getSuperpersonById(id);
-        model.addAttribute("superperson", superperson);
         List<Superpower> superpowers = superpowerDao.getAllSuperpowers();
-        model.addAttribute("superpowers", superpowers);
         List<Organization> superpersonOrganizations = organizationDao.getOrganizationsForSuperperson(superperson);
-        model.addAttribute("organizations", superpersonOrganizations);
         List<Supertype> supertypes = supertypeDao.getAllSupertypes();
+        
+        model.addAttribute("superperson", superperson);
+        model.addAttribute("superpowers", superpowers);
+        model.addAttribute("organizations", superpersonOrganizations);
         model.addAttribute("supertypes", supertypes);
+        
         return "superpersonDetail";
     }
     
     @GetMapping("confirmDeleteSuperperson")
     public String confirmDeleteSuperperson(int id, Model model){
+        
         Superperson superperson = superpersonDao.getSuperpersonById(id);
-        model.addAttribute("superperson", superperson);
         List<Superpower> superpowers = superpowerDao.getAllSuperpowers();
-        model.addAttribute("superpowers", superpowers);
         List<Organization> superpersonOrganizations = organizationDao.getOrganizationsForSuperperson(superperson);
-        model.addAttribute("organizations", superpersonOrganizations);
         List<Supertype> supertypes = supertypeDao.getAllSupertypes();
+        
+        model.addAttribute("superperson", superperson);
+        model.addAttribute("superpowers", superpowers);
+        model.addAttribute("organizations", superpersonOrganizations);
         model.addAttribute("supertypes", supertypes);
+        
         return "confirmDeleteSuperperson";
     }
     

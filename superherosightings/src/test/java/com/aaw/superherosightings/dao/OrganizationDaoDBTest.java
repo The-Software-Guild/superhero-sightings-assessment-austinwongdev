@@ -252,16 +252,14 @@ public class OrganizationDaoDBTest {
         Organization organizationFromDao = organizationDao.getOrganizationById(organization1.getOrgId());
         assertNull(organizationFromDao);
         
-//        superperson1 = superpersonDao.getSuperpersonById(superperson1.getSuperpersonId());
-//        assertFalse(superperson1.getOrganizations().contains(organization1));
-//        assertTrue(superperson1.getOrganizations().contains(organization2));
-//        
-//        addressFromDao = addressDao.getAddressById(addressFromDao.getAddressId());
-//        assertNull(addressFromDao);
-//        
-//        assertThrows(Exception.class,
-//                () -> organizationDao.deleteOrganizationById(organization2Id),
-//                "Should throw exception because every superperson needs at least 1 organization");
+        superperson1 = superpersonDao.getSuperpersonById(superperson1.getSuperpersonId());
+        final int org1Id = organization1.getOrgId();
+        assertFalse(superperson1.getOrganizations().stream().anyMatch(o -> o.getOrgId() == org1Id));
+        final int org2Id = organization2.getOrgId();
+        assertTrue(superperson1.getOrganizations().stream().anyMatch(o -> o.getOrgId() == org2Id));
+        
+        addressFromDao = addressDao.getAddressById(addressFromDao.getAddressId());
+        assertNull(addressFromDao);
         
     }
 

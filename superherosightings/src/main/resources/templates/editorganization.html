@@ -124,10 +124,10 @@
                         </label>
                         <select multiple id="memberIds" name="memberIds" 
                                     class="form-control col-9" >
-                            <option th:each="superperson : ${members}" 
+                            <option th:each="superperson : ${superpeople}" 
                                     th:value="${superperson.superpersonId}" 
                                     th:text="${superperson.superpersonName}"
-                                    th:selected="${organization.members.contains(superperson)}">
+                                    th:selected="${organizationMembers.contains(superperson)}">
                                 Members</option>
                         </select>
                     </div>

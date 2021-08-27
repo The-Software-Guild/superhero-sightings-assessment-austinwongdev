@@ -342,9 +342,12 @@ public class SuperpersonDaoDBTest {
         // Get superpeople for location1
         List<Superperson> superpeopleForLocation = superpersonDao.getSuperpeopleForLocation(location1);
         assertEquals(2, superpeopleForLocation.size());
-//        assertTrue(superpeopleForLocation.contains(superperson1));
-//        assertTrue(superpeopleForLocation.contains(superperson2));
-        assertFalse(superpeopleForLocation.contains(superperson3));
+        final int superperson1Id = superperson1.getSuperpersonId();
+        final int superperson2Id = superperson2.getSuperpersonId();
+        final int superperson3Id = superperson3.getSuperpersonId();
+        assertTrue(superpeopleForLocation.stream().anyMatch(s -> s.getSuperpersonId() == superperson1Id));
+        assertTrue(superpeopleForLocation.stream().anyMatch(s -> s.getSuperpersonId() == superperson2Id));
+        assertFalse(superpeopleForLocation.stream().anyMatch(s -> s.getSuperpersonId() == superperson3Id));
     }
 
     /**
@@ -406,9 +409,12 @@ public class SuperpersonDaoDBTest {
         // Get superheroes by organizations
         List<Superperson> superpeopleFromDao = superpersonDao.getSuperpeopleForOrganization(organization1);
         assertEquals(2, superpeopleFromDao.size());
-//        assertTrue(superpeopleFromDao.contains(superperson1));
-//        assertTrue(superpeopleFromDao.contains(superperson2));
-        assertFalse(superpeopleFromDao.contains(superperson3));
+        final int superperson1Id = superperson1.getSuperpersonId();
+        final int superperson2Id = superperson2.getSuperpersonId();
+        final int superperson3Id = superperson3.getSuperpersonId();
+        assertTrue(superpeopleFromDao.stream().anyMatch(s -> s.getSuperpersonId() == superperson1Id));
+        assertTrue(superpeopleFromDao.stream().anyMatch(s -> s.getSuperpersonId() == superperson2Id));
+        assertFalse(superpeopleFromDao.stream().anyMatch(s -> s.getSuperpersonId() == superperson3Id));
     }
     
 }

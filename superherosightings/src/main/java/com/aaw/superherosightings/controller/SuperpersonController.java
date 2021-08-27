@@ -28,7 +28,6 @@ import javax.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -116,6 +115,8 @@ public class SuperpersonController {
         model.addAttribute("supertypes", supertypes);
         Superperson superperson = superpersonDao.getSuperpersonById(id);
         model.addAttribute("superperson", superperson);
+        List<Organization> superpersonOrganizations = organizationDao.getOrganizationsForSuperperson(superperson);
+        model.addAttribute("superpersonOrganizations", superpersonOrganizations);
         return "editSuperperson";
     }
     
@@ -153,8 +154,8 @@ public class SuperpersonController {
         model.addAttribute("superperson", superperson);
         List<Superpower> superpowers = superpowerDao.getAllSuperpowers();
         model.addAttribute("superpowers", superpowers);
-        List<Organization> organizations = organizationDao.getAllOrganizations();
-        model.addAttribute("organizations", organizations);
+        List<Organization> superpersonOrganizations = organizationDao.getOrganizationsForSuperperson(superperson);
+        model.addAttribute("organizations", superpersonOrganizations);
         List<Supertype> supertypes = supertypeDao.getAllSupertypes();
         model.addAttribute("supertypes", supertypes);
         return "superpersonDetail";
@@ -166,8 +167,8 @@ public class SuperpersonController {
         model.addAttribute("superperson", superperson);
         List<Superpower> superpowers = superpowerDao.getAllSuperpowers();
         model.addAttribute("superpowers", superpowers);
-        List<Organization> organizations = organizationDao.getAllOrganizations();
-        model.addAttribute("organizations", organizations);
+        List<Organization> superpersonOrganizations = organizationDao.getOrganizationsForSuperperson(superperson);
+        model.addAttribute("organizations", superpersonOrganizations);
         List<Supertype> supertypes = supertypeDao.getAllSupertypes();
         model.addAttribute("supertypes", supertypes);
         return "confirmDeleteSuperperson";

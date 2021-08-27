@@ -195,21 +195,7 @@ public class SuperpowerDaoDBTest {
         superpowerFromDao = superpowerDao.getSuperpowerById(superpower1.getSuperpowerId());
         assertNull(superpowerFromDao);
         
-//        superpowerDao.addSuperpower(superpower1);
-//        
-//        Superperson superperson1 = new Superperson();
-//        superperson1.setSuperpersonDescription("Can fly to the stratosphere");
-//        superperson1.setSuperpersonName("Hawkman");
-//        superperson1.setSuperpower(superpower1);
-//        superperson1.setSupertype(supertypeDao.getSupertypeById(1));
-//        List<Organization> organizations = new ArrayList<>();
-//        organizations.add(organization1);
-//        superperson1.setOrganizations(organizations);
-//        superperson1 = superpersonDao.addSuperperson(superperson1);
-//        
-//        assertThrows(Exception.class, 
-//                () -> superpowerDao.deleteSuperpowerById(superpower1Id),
-//                "Should throw exception due to superperson having superpower");
+        superpowerDao.addSuperpower(superpower1);
     }
     
 }

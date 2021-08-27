@@ -192,8 +192,8 @@ public class SightingDaoDBTest {
         
         List<Sighting> sightings = sightingDao.getAllSightings();
         assertEquals(2, sightings.size());
-//        assertTrue(sightings.contains(sighting1));
-//        assertTrue(sightings.contains(sighting2));
+        assertTrue(sightings.contains(sighting1));
+        assertTrue(sightings.contains(sighting2));
     }
 
     /**
@@ -291,8 +291,8 @@ public class SightingDaoDBTest {
         
         List<Sighting> mostRecentSightings = sightingDao.getMostRecentSightings(2);
         assertEquals(2, mostRecentSightings.size());
-//        assertTrue(mostRecentSightings.contains(sighting2));
-//        assertTrue(mostRecentSightings.contains(sighting3));
+        assertTrue(mostRecentSightings.contains(sighting2));
+        assertTrue(mostRecentSightings.contains(sighting3));
         assertFalse(mostRecentSightings.contains(sighting1));
         
     }

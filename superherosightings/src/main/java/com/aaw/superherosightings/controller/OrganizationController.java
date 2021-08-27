@@ -91,7 +91,7 @@ public class OrganizationController {
         Organization organization = organizationDao.getOrganizationById(id);
         model.addAttribute("organization", organization);
         List<Supertype> supertypes = supertypeDao.getAllSupertypes();
-        List<Superperson> members = superpersonDao.getAllSuperpeople();
+        List<Superperson> members = superpersonDao.getSuperpeopleForOrganization(organization);
         model.addAttribute("supertypes", supertypes);
         model.addAttribute("members", members);
         
@@ -103,9 +103,11 @@ public class OrganizationController {
         Organization organization = organizationDao.getOrganizationById(id);
         model.addAttribute("organization", organization);
         List<Supertype> supertypes = supertypeDao.getAllSupertypes();
-        List<Superperson> members = superpersonDao.getAllSuperpeople();
+        List<Superperson> superpeople = superpersonDao.getAllSuperpeople();
         model.addAttribute("supertypes", supertypes);
-        model.addAttribute("members", members);
+        model.addAttribute("superpeople", superpeople);
+        List<Superperson> organizationMembers = superpersonDao.getSuperpeopleForOrganization(organization);
+        model.addAttribute("organizationMembers", organizationMembers);
         
         return "editOrganization";
     }
@@ -144,7 +146,7 @@ public class OrganizationController {
         Organization organization = organizationDao.getOrganizationById(id);
         model.addAttribute("organization", organization);
         List<Supertype> supertypes = supertypeDao.getAllSupertypes();
-        List<Superperson> members = superpersonDao.getAllSuperpeople();
+        List<Superperson> members = superpersonDao.getSuperpeopleForOrganization(organization);
         model.addAttribute("supertypes", supertypes);
         model.addAttribute("members", members);
         

@@ -159,7 +159,13 @@ public class SuperpersonDaoDB implements SuperpersonDao {
         final String SELECT_MEMBERS_FOR_ORGANIZATION = "SELECT s.* FROM superperson s "
                 + "INNER JOIN membership m ON m.superpersonId = s.superpersonId "
                 + "WHERE m.orgId = ?";
-        return jdbc.query(SELECT_MEMBERS_FOR_ORGANIZATION, new SuperpersonMapper(), organization.getOrgId());
+        List<Superperson> superpeople = jdbc.query(SELECT_MEMBERS_FOR_ORGANIZATION, new SuperpersonMapper(), organization.getOrgId());
+        for (Superperson superperson : superpeople){
+            superperson.setOrganizations(getOrganizationsForSuperperson(superperson));
+            superperson.setSuperpower(getSuperpowerForSuperperson(superperson));
+            superperson.setSupertype(getSupertypeForSuperperson(superperson));
+        }
+        return superpeople;
     }
     
     public static final class SuperpersonMapper implements RowMapper<Superperson> {

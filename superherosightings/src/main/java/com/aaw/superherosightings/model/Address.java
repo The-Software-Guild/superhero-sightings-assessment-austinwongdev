@@ -8,6 +8,8 @@
 package com.aaw.superherosightings.model;
 
 import java.util.Objects;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -16,11 +18,23 @@ import java.util.Objects;
 public class Address {
 
     private int addressId;
+    
+    @NotBlank(message = "Address must not be empty.")
+    @Size(max=100, message = "Address must be less than 100 characters.")
     private String address;
+    
+    @NotBlank(message = "City must not be empty.")
+    @Size(max=100, message = "City must be less than 50 characters.")
     private String city;
+    
+    @NotBlank(message = "State must not be empty.")
+    @Size(min=2, max=2, message = "State must be 2 characters.")
     private String state;
+    
+    @NotBlank(message = "ZIP must not be empty.")
+    @Size(min=5, max=5, message = "ZIP must be 5 digits.")
     private String zip;
-
+    
     public int getAddressId() {
         return addressId;
     }

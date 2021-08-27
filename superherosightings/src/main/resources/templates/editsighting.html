@@ -53,6 +53,11 @@
                                 th:selected="${superperson.superpersonId == sighting.superperson.superpersonId}">
                             Superperson</option>
                         </select>
+                        <div th:if="${#fields.hasErrors('sighting.superperson')}">
+                            <p th:each="error : ${#fields.errors('sighting.superperson')}" 
+                               class="alert alert-danger" th:text="${error}"> 
+                            No superperson selected </p>
+                        </div>
                     </div>
 
                     <div class="form-group row">
@@ -67,6 +72,11 @@
                                 th:selected="${location.locationId == sighting.location.locationId}">
                             Location</option>
                         </select>
+                        <div th:if="${#fields.hasErrors('sighting.location')}">
+                            <p th:each="error : ${#fields.errors('sighting.location')}" 
+                               class="alert alert-danger" th:text="${error}"> 
+                            No location selected </p>
+                        </div>
                     </div>
                     <div class="form-group row">
                         <label for="dateVal" class="col-3 col-form-label">
@@ -84,6 +94,11 @@
                             <input type="time" name="timeVal" 
                                    id="timeVal" class="form-control"
                                    th:value="${sightingTime}"/>
+                            <div th:if="${#fields.hasErrors('sighting.sightingDatetime')}">
+                            <p th:each="error : ${#fields.errors('sighting.sightingDatetime')}" 
+                               class="alert alert-danger" th:text="${error}"> 
+                            Future date selected </p>
+                        </div>
                         </div>
                     </div>
                     <input type="hidden" name="sightingId" th:value="${sighting.sightingId}"/>

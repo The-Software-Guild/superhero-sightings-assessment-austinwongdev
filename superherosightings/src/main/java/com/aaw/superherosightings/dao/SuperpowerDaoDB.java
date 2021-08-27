@@ -7,6 +7,8 @@
 
 package com.aaw.superherosightings.dao;
 
+import com.aaw.superherosightings.dao.SuperpersonDaoDB.SuperpersonMapper;
+import com.aaw.superherosightings.model.Superperson;
 import com.aaw.superherosightings.model.Superpower;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -68,8 +70,12 @@ public class SuperpowerDaoDB implements SuperpowerDao {
 
     @Override
     public void deleteSuperpowerById(int id) {
-        final String DELETE_SUPERPOWER = "DELETE FROM superpower WHERE superpowerId = ?";
-        jdbc.update(DELETE_SUPERPOWER, id);
+        final String SELECT_SUPERPEOPLE_WITH_SUPERPOWER = "SELECT * FROM superperson WHERE superpowerId = ?";
+        List<Superperson> superpeopleWithSuperpower = jdbc.query(SELECT_SUPERPEOPLE_WITH_SUPERPOWER, new SuperpersonMapper(), id);
+        if (superpeopleWithSuperpower == null || superpeopleWithSuperpower.isEmpty()){
+            final String DELETE_SUPERPOWER = "DELETE FROM superpower WHERE superpowerId = ?";
+            jdbc.update(DELETE_SUPERPOWER, id);
+        }
     }
 
     public static final class SuperpowerMapper implements RowMapper<Superpower> {

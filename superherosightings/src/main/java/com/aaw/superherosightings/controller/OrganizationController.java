@@ -137,6 +137,14 @@ public class OrganizationController {
     
     @GetMapping("deleteOrganization")
     public String deleteOrganization(int id){
+        
+        List<Superperson> superpeopleInOrganization = superpersonDao.getSuperpeopleForOrganization(organizationDao.getOrganizationById(id));
+        if (superpeopleInOrganization != null && !superpeopleInOrganization.isEmpty()){
+            if (superpeopleInOrganization.stream().anyMatch(s -> s.getOrganizations().size() <= 1)){
+                return "redirect:/organization";
+            }
+        }
+        
         organizationDao.deleteOrganizationById(id);
         return "redirect:/organization";
     }

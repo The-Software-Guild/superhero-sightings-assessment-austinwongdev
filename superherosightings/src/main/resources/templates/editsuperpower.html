@@ -40,31 +40,26 @@
             <div class="col-3 text-center m-3">
                 <span class="h3">Edit Superpower</span>
             </div>
-        </div>
-        <form action="editSuperpower" method="POST">
-            <div class="form-group row">
-                <div class="col-3 text-right"><strong>ID</strong></div>
-                <div class="col-9 text-left">
-                    <span th:text="${superpower.superpowerId}">display id</span>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="superpowerName" class="col-3 col-form-label">Name</label>
-                <div class="col-9">
-                    <input type="text" name="superpowerName" id="superpowerName" class="form-control"
-                                   th:value="${superpower.superpowerName}"/>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-3 text-right">
+            <div class="col-7 text-center m-3">
+                <form action="editSuperpower" method="POST">
+                    <div class="form-group row">
+                        <label for="superpowerName" class="col-3 col-form-label">Name</label>
+                        <div class="col-9">
+                            <input type="text" name="superpowerName" id="superpowerName" class="form-control"
+                                           th:value="${superpower.superpowerName}"/>
+                            <div th:if="${#fields.hasErrors('superpower.superpowerName')}">
+                                <p th:each="error : ${#fields.errors('superpower.superpowerName')}"
+                                   class="alert alert-danger"
+                                   th:text="${error}"> Bad first name </p>
+                            </div>
+                        </div>
+                    </div>
                     <input type="hidden" name="superpowerId" th:value="${superpower.superpowerId}"/>
                     <button type="submit" class="btn btn-primary">OK</button>
-                </div>
-                <div class="col-9 text-left">
-                    <a href="superpower" class="btn btn-secondary">Cancel</button>
-                </div>
+                    <a href="superpower" class="btn btn-secondary">Cancel</a>
+                </form>
             </div>
-        </form>
+        </div>
     </div> 
     
     <!-- End main body -->

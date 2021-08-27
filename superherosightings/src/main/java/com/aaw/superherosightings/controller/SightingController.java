@@ -18,11 +18,16 @@ import com.aaw.superherosightings.model.Superperson;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -49,8 +54,11 @@ public class SightingController {
     @Autowired
     SuperpersonDao superpersonDao;
     
+    Set<Error> errors = new HashSet<>();
+    
     @GetMapping("sighting")
     public String displaySighting(Model model){
+        model.addAttribute("errors", errors);
         List<Sighting> sightings = sightingDao.getAllSightings();
         model.addAttribute("sightings", sightings);
         List<Superperson> superpeople = superpersonDao.getAllSuperpeople();
@@ -61,23 +69,59 @@ public class SightingController {
     }
     
     @PostMapping("addSighting")
-    public String addSighting(HttpServletRequest request){
+    public String addSighting(HttpServletRequest request, Model model){
         Sighting sighting = new Sighting();
         
-        int superpersonId = Integer.parseInt(request.getParameter("superpersonVal"));
-        Superperson superperson = superpersonDao.getSuperpersonById(superpersonId);
-        sighting.setSuperperson(superperson);
+        errors.clear();
         
-        int locationId = Integer.parseInt(request.getParameter("locationVal"));
-        Location location = locationDao.getLocationById(locationId);
-        sighting.setLocation(location);
+        // Must have a superperson
+        String superpersonIdStr = request.getParameter("superpersonVal");
+        if (superpersonIdStr == null){
+            Error error = new Error("Sighting must include a superperson.");
+            errors.add(error);
+        }
+        else{
+            int superpersonId = Integer.parseInt(superpersonIdStr);
+            Superperson superperson = superpersonDao.getSuperpersonById(superpersonId);
+            sighting.setSuperperson(superperson);
+        }
         
-        LocalDate date = LocalDate.parse(request.getParameter("dateVal"));
-        LocalTime time = LocalTime.parse(request.getParameter("timeVal"));
-        LocalDateTime sightingDateTime = LocalDateTime.of(date, time);
-        sighting.setSightingDatetime(sightingDateTime);
+        // Must have a location
+        String locationIdStr = request.getParameter("locationVal");
+        if (locationIdStr == null){
+            Error error = new Error("Sighting must include a location.");
+            errors.add(error);
+        }
+        else{
+            int locationId = Integer.parseInt(request.getParameter("locationVal"));
+            Location location = locationDao.getLocationById(locationId);
+            sighting.setLocation(location);
+        }
         
-        sightingDao.addSighting(sighting);
+        // Must have a past/present datetime
+        String dateStr = request.getParameter("dateVal");
+        String timeStr = request.getParameter("timeVal");
+        if (dateStr == null || timeStr == null || dateStr.isEmpty() || timeStr.isEmpty()){
+            Error error = new Error("Sighting must include a date and time.");
+            errors.add(error);
+        }
+        else{
+            LocalDate date = LocalDate.parse(dateStr);
+            LocalTime time = LocalTime.parse(timeStr);
+            LocalDateTime sightingDateTime = LocalDateTime.of(date, time);
+            if (sightingDateTime.isAfter(LocalDateTime.now())){
+                Error error = new Error("Sighting must be in past or present.");
+                errors.add(error);
+            }
+            else{
+                sighting.setSightingDatetime(sightingDateTime);
+            }
+        }
+        
+        // Success
+        if (errors.isEmpty()){
+            sightingDao.addSighting(sighting);
+        }
         return "redirect:/sighting";
     }
     
@@ -95,22 +139,65 @@ public class SightingController {
     }
     
     @PostMapping("editSighting")
-    public String editSighting(Sighting sighting, HttpServletRequest request){
-        int superpersonId = Integer.parseInt(request.getParameter("superpersonVal"));
-        Superperson superperson = superpersonDao.getSuperpersonById(superpersonId);
-        sighting.setSuperperson(superperson);
+    public String editSighting(@Valid Sighting sighting, BindingResult result, HttpServletRequest request, Model model){
         
-        int locationId = Integer.parseInt(request.getParameter("locationVal"));
-        Location location = locationDao.getLocationById(locationId);
-        sighting.setLocation(location);
+        // Must have a superperson
+        String superpersonIdStr = request.getParameter("superpersonVal");
+        if (superpersonIdStr == null){
+            FieldError error = new FieldError("sighting", "superperson", "Sighting must include a superperson.");
+            result.addError(error);
+        }
+        else{
+            int superpersonId = Integer.parseInt(superpersonIdStr);
+            Superperson superperson = superpersonDao.getSuperpersonById(superpersonId);
+            sighting.setSuperperson(superperson);
+        }
         
-        LocalDate date = LocalDate.parse(request.getParameter("dateVal"));
-        LocalTime time = LocalTime.parse(request.getParameter("timeVal"));
-        LocalDateTime sightingDateTime = LocalDateTime.of(date, time);
-        sighting.setSightingDatetime(sightingDateTime);
+        // Must have a location
+        String locationIdStr = request.getParameter("locationVal");
+        if (locationIdStr == null){
+            FieldError error = new FieldError("sighting", "location", "Sighting must include a location.");
+            result.addError(error);
+        }
+        else{
+            int locationId = Integer.parseInt(request.getParameter("locationVal"));
+            Location location = locationDao.getLocationById(locationId);
+            sighting.setLocation(location);
+        }
         
+        // Must have a past/present datetime
+        String dateStr = request.getParameter("dateVal");
+        String timeStr = request.getParameter("timeVal");
+        if (dateStr == null || timeStr == null || dateStr.isEmpty() || timeStr.isEmpty()){
+            FieldError error = new FieldError("sighting", "sightingDatetime", "Sighting must include a date and time.");
+            result.addError(error);
+        }
+        else{
+            LocalDate date = LocalDate.parse(dateStr);
+            LocalTime time = LocalTime.parse(timeStr);
+            LocalDateTime sightingDateTime = LocalDateTime.of(date, time);
+            if (sightingDateTime.isAfter(LocalDateTime.now())){
+                FieldError error = new FieldError("sighting", "sightingDatetime", "Sighting must be in past or present.");
+                result.addError(error);
+            }
+            else{
+                sighting.setSightingDatetime(sightingDateTime);
+            }
+        }
+        
+        // Failure -> Reset fields
+        if (result.hasErrors()){
+            model.addAttribute("sighting", sighting);
+            model.addAttribute("locations", locationDao.getAllLocations());
+            model.addAttribute("superpeople", superpersonDao.getAllSuperpeople());
+            sighting = sightingDao.getSightingById(sighting.getSightingId());
+            model.addAttribute("sightingDate", sighting.getSightingDatetime().toLocalDate());
+            model.addAttribute("sightingTime", sighting.getSightingDatetime().toLocalTime());
+            return "editSighting";
+        }
+        
+        // Success
         sightingDao.updateSighting(sighting);
-        
         return "redirect:/sightingDetail?id="+sighting.getSightingId();
     }
     

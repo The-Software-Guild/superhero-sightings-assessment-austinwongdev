@@ -58,9 +58,11 @@ public class SuperpersonController {
     SupertypeDao supertypeDao;
     
     Set<ConstraintViolation<Superperson>> violations = new HashSet<>();
+    Set<Error> customErrors = new HashSet<>();
     
     @GetMapping("superperson")
     public String displaySuperpeople(Model model){
+        model.addAttribute("customErrors", customErrors);
         model.addAttribute("errors", violations);
         List<Superpower> superpowers = superpowerDao.getAllSuperpowers();
         model.addAttribute("superpowers", superpowers);
@@ -76,57 +78,15 @@ public class SuperpersonController {
     @PostMapping("addSuperperson")
     public String addSuperperson(Superperson superperson, HttpServletRequest request){
         
-        // Gather organizations
-        String[] orgIds = request.getParameterValues("organizationsVal");
-        List<Organization> organizations = new ArrayList<>();
-        for (String orgId : orgIds){
-            organizations.add(organizationDao.getOrganizationById(Integer.parseInt(orgId)));
-        }
-        superperson.setOrganizations(organizations);
-        
-        // Get Supertype
-        int supertypeId = Integer.parseInt(request.getParameter("supertypeVal"));
-        Supertype supertype = supertypeDao.getSupertypeById(supertypeId);
-        superperson.setSupertype(supertype);
-        
-        // Get Superpower
-        int superpowerId = Integer.parseInt(request.getParameter("superpowerVal"));
-        Superpower superpower = superpowerDao.getSuperpowerById(superpowerId);
-        superperson.setSuperpower(superpower);
-        
-        Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
-        violations = validate.validate(superperson);
-        
-        if (violations.isEmpty()){
-            superpersonDao.addSuperperson(superperson);
-        }
-        
-        return "redirect:/superperson";
-        
-    }
-    
-    @GetMapping("editSuperperson")
-    public String editSuperperson(int id, Model model){
-        List<Superpower> superpowers = superpowerDao.getAllSuperpowers();
-        model.addAttribute("superpowers", superpowers);
-        List<Organization> organizations = organizationDao.getAllOrganizations();
-        model.addAttribute("organizations", organizations);
-        List<Supertype> supertypes = supertypeDao.getAllSupertypes();
-        model.addAttribute("supertypes", supertypes);
-        Superperson superperson = superpersonDao.getSuperpersonById(id);
-        model.addAttribute("superperson", superperson);
-        List<Organization> superpersonOrganizations = organizationDao.getOrganizationsForSuperperson(superperson);
-        model.addAttribute("superpersonOrganizations", superpersonOrganizations);
-        return "editSuperperson";
-    }
-    
-    @PostMapping("editSuperperson")
-    public String editSuperperson(Superperson superperson, HttpServletRequest request){
+        customErrors.clear();
         
         // Gather organizations
         String[] orgIds = request.getParameterValues("organizationsVal");
         List<Organization> organizations = new ArrayList<>();
-        if (orgIds != null){
+        if (orgIds == null || orgIds.length == 0){
+            customErrors.add(new Error("Superperson must belong to at least 1 organization"));
+        }
+        else{
             for (String orgId : orgIds){
                 organizations.add(organizationDao.getOrganizationById(Integer.parseInt(orgId)));
             }
@@ -143,9 +103,71 @@ public class SuperpersonController {
         Superpower superpower = superpowerDao.getSuperpowerById(superpowerId);
         superperson.setSuperpower(superpower);
         
-        superpersonDao.updateSuperperson(superperson);
+        Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
+        violations = validate.validate(superperson);
         
-        return "redirect:/superpersonDetail?id="+superperson.getSuperpersonId();
+        if (violations.isEmpty() && customErrors.isEmpty()){
+            superpersonDao.addSuperperson(superperson);
+        }
+        
+        return "redirect:/superperson";
+        
+    }
+    
+    @GetMapping("editSuperperson")
+    public String editSuperperson(int id, Model model){
+        model.addAttribute("customErrors", customErrors);
+        model.addAttribute("errors", violations);
+        List<Superpower> superpowers = superpowerDao.getAllSuperpowers();
+        model.addAttribute("superpowers", superpowers);
+        List<Organization> organizations = organizationDao.getAllOrganizations();
+        model.addAttribute("organizations", organizations);
+        List<Supertype> supertypes = supertypeDao.getAllSupertypes();
+        model.addAttribute("supertypes", supertypes);
+        Superperson superperson = superpersonDao.getSuperpersonById(id);
+        model.addAttribute("superperson", superperson);
+        List<Organization> superpersonOrganizations = organizationDao.getOrganizationsForSuperperson(superperson);
+        model.addAttribute("superpersonOrganizations", superpersonOrganizations);
+        return "editSuperperson";
+    }
+    
+    @PostMapping("editSuperperson")
+    public String editSuperperson(Superperson superperson, HttpServletRequest request){
+        
+        customErrors.clear();
+        
+        // Gather organizations
+        String[] orgIds = request.getParameterValues("organizationsVal");
+        List<Organization> organizations = new ArrayList<>();
+        if (orgIds == null || orgIds.length == 0){
+            customErrors.add(new Error("Superperson must belong to at least 1 organization."));
+        }
+        else{
+            for (String orgId : orgIds){
+                organizations.add(organizationDao.getOrganizationById(Integer.parseInt(orgId)));
+            }
+        }
+        superperson.setOrganizations(organizations);
+        
+        // Get Supertype
+        int supertypeId = Integer.parseInt(request.getParameter("supertypeVal"));
+        Supertype supertype = supertypeDao.getSupertypeById(supertypeId);
+        superperson.setSupertype(supertype);
+        
+        // Get Superpower
+        int superpowerId = Integer.parseInt(request.getParameter("superpowerVal"));
+        Superpower superpower = superpowerDao.getSuperpowerById(superpowerId);
+        superperson.setSuperpower(superpower);
+        
+        Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
+        violations = validate.validate(superperson);
+        
+        if (violations.isEmpty() && customErrors.isEmpty()){
+            superpersonDao.updateSuperperson(superperson);
+            return "redirect:/superpersonDetail?id="+superperson.getSuperpersonId();
+        }
+        
+        return "redirect:/editSuperperson?id="+superperson.getSuperpersonId();
     }
     
     @GetMapping("superpersonDetail")

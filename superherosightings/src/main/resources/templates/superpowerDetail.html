@@ -40,23 +40,22 @@
             <div class="col-3 text-center m-3">
                 <span class="h3">Superpower Details</span>
             </div>
-        </div>
-        <div class="row m-4">
-            <div class="col-6 text-right"><strong>ID</strong></div>
-            <div class="col-6 text-left">
-                <span th:text="${superpower.superpowerId}">display id</span>
-            </div>
-            <div class="col-6 text-right"><strong>Name</strong></div>
-            <div class="col-6 text-left">
-                <span th:text="${superpower.superpowerName}">display superpower name</span>
-            </div>
-        </div>
-        <div class="row m-4">
-            <div class="col-6 text-center">
-                <a href="#" th:href="@{/editSuperpower(id=${superpower.superpowerId})}" class="btn btn-outline-primary btn-lg">Edit</a>
-            </div>
-            <div class="col-6 text-center">
-                <a href="#" th:href="@{/confirmDeleteSuperpower(id=${superpower.superpowerId})}" class="btn btn-outline-primary btn-lg">Delete</a>
+            <div class="col-7 text-center m-3">
+                <div class="form-group row">
+                <label for="superpowerName" class="col-3 col-form-label">Name</label>
+                <div class="col-9">
+                    <input type="text" name="superpowerName" id="superpowerName" class="form-control"
+                                       th:value="${superpower.superpowerName}" disabled/>
+                        <div th:if="${#fields.hasErrors('superpower.superpowerName')}">
+                            <p th:each="error : ${#fields.errors('superpower.superpowerName')}"
+                               class="alert alert-danger"
+                               th:text="${error}"> Bad first name </p>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" name="superpowerId" th:value="${superpower.superpowerId}"/>
+                <a href="#" th:href="@{/editSuperpower(id=${superpower.superpowerId})}" class="btn btn-primary">Edit</a>
+                <a href="#" th:href="@{/confirmDeleteSuperpower(id=${superpower.superpowerId})}" class="btn btn-secondary">Delete</a>
             </div>
         </div>
     </div> 

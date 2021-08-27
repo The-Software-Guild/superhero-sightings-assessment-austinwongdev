@@ -9,6 +9,7 @@ package com.aaw.superherosightings.model;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import javax.validation.constraints.Past;
 
 /**
  *
@@ -19,6 +20,8 @@ public class Sighting {
     private int sightingId;
     private Superperson superperson;
     private Location location;
+    
+    @Past(message = "Sighting must be in the past.")
     private LocalDateTime sightingDatetime;
 
     public int getSightingId() {

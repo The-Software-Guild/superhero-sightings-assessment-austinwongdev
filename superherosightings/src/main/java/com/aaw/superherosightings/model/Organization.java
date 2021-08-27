@@ -11,6 +11,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -19,11 +23,27 @@ import java.util.Set;
 public class Organization {
 
     private int orgId;
+    
+    @NotBlank(message = "Name must not be empty.")
+    @Size(max=50, message = "Name must be less than 50 characters.")
     private String orgName;
+    
+    @NotBlank(message = "Description must not be empty.")
+    @Size(max=100, message = "Description must be less than 100 characters.")
     private String orgDescription;
+    
+    @NotBlank(message = "Email must not be empty.")
+    @Size(max=50, message = "Email must be less than 50 characters.")
+    @Email
     private String email;
+    
+    @Pattern(regexp="^[0-9]{3}-[0-9]{3}-[0-9]{4}$", message="Phone must match pattern 555-555-5555")
     private String phone;
+    
+    @NotBlank(message = "Address must not be empty.")
+    @Size(max=50, message = "Address must be less than 50 characters.")
     private Address address;
+    
     private Supertype supertype;
     private List<Superperson> members;
 

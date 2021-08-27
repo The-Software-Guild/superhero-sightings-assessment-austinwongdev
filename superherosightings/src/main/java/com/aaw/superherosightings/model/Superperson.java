@@ -7,18 +7,29 @@
 
 package com.aaw.superherosightings.model;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 /**
  *
  * @author Austin Wong
  */
 public class Superperson {
-
+    
     private int superpersonId;
+    
+    @NotBlank(message = "Name must not be empty.")
+    @Size(max = 50, message = "Name must be less than 50 characters.")
     private String superpersonName;
+    
+    @NotBlank(message = "Description must not be empty.")
+    @Size(max = 50, message = "Description must be less than 100 characters.")
     private String superpersonDescription;
+    
     private Supertype supertype;
     private Superpower superpower;
     private List<Organization> organizations;
@@ -110,7 +121,18 @@ public class Superperson {
         if (!Objects.equals(this.superpower, other.superpower)) {
             return false;
         }
-        if (!Objects.equals(this.organizations, other.organizations)) {
+        
+        Set<Integer> thisOrgIds = new HashSet<>();
+        Set<Integer> otherOrgIds = new HashSet<>();
+        
+        for (Organization org : this.organizations){
+            thisOrgIds.add(org.getOrgId());
+        }
+        for (Organization org : other.organizations){
+            otherOrgIds.add(org.getOrgId());
+        }
+        
+        if (!Objects.equals(thisOrgIds, otherOrgIds)) {
             return false;
         }
         return true;

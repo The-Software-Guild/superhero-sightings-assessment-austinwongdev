@@ -18,11 +18,17 @@ import com.aaw.superherosightings.model.Superperson;
 import com.aaw.superherosightings.model.Superpower;
 import com.aaw.superherosightings.model.Supertype;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -52,8 +58,11 @@ public class SuperpersonController {
     @Autowired
     SupertypeDao supertypeDao;
     
+    Set<ConstraintViolation<Superperson>> violations = new HashSet<>();
+    
     @GetMapping("superperson")
     public String displaySuperpeople(Model model){
+        model.addAttribute("errors", violations);
         List<Superpower> superpowers = superpowerDao.getAllSuperpowers();
         model.addAttribute("superpowers", superpowers);
         List<Organization> organizations = organizationDao.getAllOrganizations();
@@ -86,7 +95,12 @@ public class SuperpersonController {
         Superpower superpower = superpowerDao.getSuperpowerById(superpowerId);
         superperson.setSuperpower(superpower);
         
-        superpersonDao.addSuperperson(superperson);
+        Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
+        violations = validate.validate(superperson);
+        
+        if (violations.isEmpty()){
+            superpersonDao.addSuperperson(superperson);
+        }
         
         return "redirect:/superperson";
         

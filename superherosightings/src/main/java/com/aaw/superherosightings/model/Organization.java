@@ -7,8 +7,10 @@
 
 package com.aaw.superherosightings.model;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  *
@@ -136,9 +138,21 @@ public class Organization {
         if (!Objects.equals(this.supertype, other.supertype)) {
             return false;
         }
-        if (!Objects.equals(this.members, other.members)) {
+        
+        Set<Integer> thisMemberIds = new HashSet<>();
+        Set<Integer> otherMemberIds = new HashSet<>();
+        
+        for (Superperson supe : this.members){
+            thisMemberIds.add(supe.getSuperpersonId());
+        }
+        for (Superperson supe : other.members){
+            otherMemberIds.add(supe.getSuperpersonId());
+        }
+        
+        if (!Objects.equals(thisMemberIds, otherMemberIds)) {
             return false;
         }
+        
         return true;
     }
 
